@@ -4,9 +4,11 @@ parameters:
 #    parameter_name: value
 
 services:
-  app.authenticationservice:
+  app.authentication_service:
     class: AppBundle\Service\AuthenticationService
     arguments: ["@doctrine.orm.entity_manager", "@form.factory"]
+  app.password_encoder:
+    class: AppBundle\Service\PasswordEncoderService
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

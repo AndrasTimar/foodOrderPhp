@@ -1,6 +1,7 @@
 <?php
 
 namespace  AppBundle\Service;
+use AppBundle\Entity\User;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -18,21 +19,22 @@ interface IAuthenticationService
      */
     function login($uname, $upass);
 
-    /**
-     * @param $uname string
-     * @param $upass string
-     * @return boolean
-     */
-    function register($uname, $upass);
 
     /**
-     * @param $pass string
-     * @return string
-     */
-    function hashPass($pass);
-
-    /**
+     * @param UserDTO
      * @return FormInterface
      */
-    function getLoginForm();
+    function getLoginForm($userDTO);
+
+    /**
+     * @param $user User
+     * @return FormInterface
+     */
+    public function getRegForm($user);
+
+    /**
+     * @param $user User
+     * @return boolean
+     */
+    function register($user);
 }

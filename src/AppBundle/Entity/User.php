@@ -8,9 +8,11 @@
 
 namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\Table(name="user",uniqueConstraints={@UniqueConstraint(name="uname_idx", columns={"username"})})
  * @package AppBundle\Entity
  */
 class User
@@ -24,6 +26,7 @@ class User
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @
      */
     private $username;
 
@@ -45,12 +48,33 @@ class User
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $real_name;
+    private $realName;
 
     /**
      * @ORM\Column(type="boolean")
      */
     private $admin;
+
+    private $plainPassword;
+
+    /**
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+
+
 
     /**
      * Get id
@@ -143,7 +167,7 @@ class User
      */
     public function setRealName($realName)
     {
-        $this->real_name = $realName;
+        $this->realName = $realName;
 
         return $this;
     }
@@ -155,7 +179,7 @@ class User
      */
     public function getRealName()
     {
-        return $this->real_name;
+        return $this->realName;
     }
 
     /**
