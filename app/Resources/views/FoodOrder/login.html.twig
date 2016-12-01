@@ -1,0 +1,14 @@
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block body %}
+
+    <form method="post" action="{{ path('login') }}">
+        <input type="text" name="username"  title=""/>
+        <input type="text" name="password"  title=""/>
+        <input type="submit">
+    </form>
+
+{% endblock %}
