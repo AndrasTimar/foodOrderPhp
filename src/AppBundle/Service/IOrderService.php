@@ -10,6 +10,7 @@ namespace AppBundle\Service;
 
 
 use AppBundle\Entity\Food;
+use AppBundle\Entity\Order;
 use AppBundle\Entity\OrderItem;
 use Symfony\Component\Form\Test\FormInterface;
 
@@ -21,4 +22,10 @@ interface IOrderService
      * @return FormInterface
      */
     public function getOrderItemForm($orderItem);
+
+    /**
+     * @param $order Order
+     * @return
+     */
+    public function saveOrder($order);
 }

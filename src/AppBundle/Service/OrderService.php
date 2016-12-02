@@ -66,4 +66,13 @@ class OrderService implements IOrderService
         $form->add("register", SubmitType::class, array('label'=>'Save'));
         return $form->getForm();
     }
+
+    /**
+     * @param $order Order
+     */
+    public function saveOrder($order)
+    {
+        $this->entityManager->persist($order);
+        $this->entityManager->flush();
+    }
 }

@@ -115,4 +115,31 @@ class OrderController extends Controller
         $this->addFlash('notice', 'Success!');
         return $this->redirectToRoute("cart");
     }
+
+    /**
+     * @Route("/cart/send", name="sendorder")
+     */
+    public function placeOrder(Request $request){
+        $userId = $request->getSession()->get("userId");
+        if(!$userId){
+            $this->addFlash('notice', 'Please log in!');
+            return $this->redirectToRoute("login");
+        }
+        $orderItems = $request->getSession()->get("orderItems");
+        if(sizeof($orderItems) == 0){
+            $this->addFlash('notice', 'Cart is empty!');
+            return $this->redirectToRoute("cart");
+        }
+
+        /** @var Order $order */
+        $order = new Order();
+        $order->setUser($this->userService->getUserById($userId));
+        $order->setOrderDate(date('Y-m-d H:i:s'));
+        foreach($orderItems as $orderItem){
+            $order[]->$orderItem;
+        }
+        $this->orderService->saveOrder($order);
+        $this->addFlash('notice', 'Order Sent');
+        return $this->redirectToRoute("foods");
+    }
 }

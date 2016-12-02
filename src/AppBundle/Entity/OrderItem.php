@@ -24,7 +24,7 @@ class OrderItem
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderItem")
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderItem", cascade={"persist", "remove"})
      */
     private $order;
 

@@ -34,7 +34,7 @@ class Order
     private $order_date;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="order", cascade={"persist","remove"})
      */
     private $orderItem;
 
