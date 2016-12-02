@@ -141,11 +141,11 @@ class OrderController extends Controller
         $user = $this->userService->getUserById($userId);
         $order->setUser($user);
         foreach($orderItems as $orderItem){
-            $this->addFlash('notice',$orderItem->getFood()->getId());
             $order->getOrderItem()->add($orderItem);
         }
         $this->orderService->saveOrder($order);
 
+        //define credentials in config.yml
         $message = Swift_Message::newInstance('Order Sent')
             ->setFrom(array('foodorder.oe@gmail.com' => 'Food Order'))
             ->setTo(array($user->getEmail()))

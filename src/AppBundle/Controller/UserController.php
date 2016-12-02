@@ -26,11 +26,6 @@ class UserController extends Controller
      */
     private $userService;
 
-    /**
-     * @var IPasswordEncoderService
-     */
-    private $passwordEncoder;
-
 
     /**
      * @Route("/logout", name="logout")
@@ -129,7 +124,6 @@ class UserController extends Controller
         parent::setContainer($container);
 
         $this->userService = $this->get("app.user_service");
-        $this->passwordEncoder = $this->get('app.password_encoder');
     }
 
 }

@@ -5,28 +5,37 @@
 {% endblock %}
 
 {% block body %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ path("foods") }}">Food Ordering</a>
+            </div>
+            <ul class="nav navbar-nav">
+        {% if not loggedIn %}
+            <li><a href="{{ path('login') }}"> Log in</a></li>
+            <li><a href="{{ path('register') }}"> Register </a></li>
+        {% else %}
+            {% if not admin %}
+                <li><a href="{{ path('address_mod') }}"> Change My Address</a></li>
+                <li><a href="{{ path('cart') }}"> View Cart</a></li>
+            {% else %}
+                <li><a href="{{ path('add_admin') }}"> Add Administrator</a></li>
 
+            {% endif %}
+            <li><a href="{{ path('foods') }}"> Add Items to Cart</a></li>
+            <li><a href="{{ path('account') }}"> Account settings</a></li>
+            <li><a href="{{ path('logout') }}"> Logout</a></li>
+        {% endif %}
+            </ul>
+        </div>
+    </nav>
     {% for flash_message in app.session.flashbag.get('notice') %}
-        <div class="flash-notice">
+        <div class="alert alert-info">
             {{ flash_message }}
         </div>
     {% endfor %}
 
     {% block orderbody %}{% endblock %}
-    {% if not loggedIn %}
-        <p><a href="{{ path('login') }}"> Log in</a></p>
-        <p><a href="{{ path('register') }}"> Register </a></p>
-        {% else %}
-            {% if not admin %}
-                <p><a href="{{ path('address_mod') }}"> Change My Address</a></p>
-                <p><a href="{{ path('cart') }}"> View Cart</a></p>
-                {% else %}
-                    <p><a href="{{ path('add_admin') }}"> Add Administrator</a></p>
 
-            {% endif %}
-            <p><a href="{{ path('foods') }}"> See Foods</a></p>
-            <p><a href="{{ path('account') }}"> Account settings</a></p>
-            <p><a href="{{ path('logout') }}"> Logout</a></p>
-    {% endif %}
     <hr />
 {% endblock %}

@@ -3,41 +3,46 @@
 
 {% block orderbody %}
     <h1>List of foods</h1>
-    {% if admin %}
-    <p><a href="{{ path('foodedit') }}">ADD NEW FOOD</a></p>
-    {% endif %}
+
     <hr />
     <table border="0" class="table">
         <thead>
         <tr>
             <th>Name</th>
             <th>Cost</th>
-            <th>Available</th>
+            {% if admin %}
+                <th>Available</th>
+            {% endif %}
             <th>Description</th>
         </tr>
         </thead>
         <tbody>
         {% for food in foodlist %}
             {% if admin or food.available %}
-            {# @var song \AppBundle\Entity\Food #}
+            {# @var food \AppBundle\Entity\Food #}
             <tr>
                 <td>{{ food.getName() }}</td>
-                <td>{{ food.getCost() }}</td>
+                <td>{{ food.getCost() }} HUF</td>
                 {% if admin %}
                     <td>{% if food.getAvailable() %}
                         YES
                     {% else %}
                         NO
                     {% endif %}</td>
+                    <td><a href="{{ path('foodshow', { 'foodId': food.getId() }) }}">Show</a></td>
+                    <td><a href="{{ path('addfood', { 'foodId': food.getId() }) }}">Add to Cart</a></td>
                     <td><a href="{{ path('foodedit', { 'foodId': food.getId() }) }}">Edit</a></td>
                     <td><a href="{{ path('fooddel', { 'foodId': food.getId() }) }}">Delete</a></td>
                     {% else %}
+                        <td>{{ food.getDescription() }}</td>
                         <td><a href="{{ path('addfood', { 'foodId': food.getId() }) }}">Add to Cart</a></td>
                 {% endif %}
-                <td><a href="{{ path('foodshow', { 'foodId': food.getId() }) }}">Show</a></td>
             </tr>
             {% endif %}
         {% endfor %}
         </tbody>
     </table>
+    {% if admin %}
+      <a href="{{ path('foodedit') }}" class="btn btn-default" role="button">ADD NEW FOOD</a>
+    {% endif %}
 {% endblock %}
