@@ -64,7 +64,7 @@ class OrderService implements IOrderService
                     ->where("f.available = 1");
              },
             'choice_label' => function ($food) {
-                return $food->getName()."|".$food->getCost()." Ft";},
+                return $food->getName()." | ".$food->getCost()." Ft";},
             'choice_value' => 'id'
         ));
 

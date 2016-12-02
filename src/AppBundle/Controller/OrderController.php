@@ -14,6 +14,7 @@ use AppBundle\Entity\OrderItem;
 use AppBundle\Service\IFoodService;
 use AppBundle\Service\IOrderService;
 use AppBundle\Service\IUserService;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,6 +36,11 @@ class OrderController extends Controller
      * @var IUserService
      */
     private $userService;
+
+    /**
+     * @var \Swift_Mailer
+     */
+    private $mailerService;
     /**
      * @var Order
      */
@@ -46,6 +52,7 @@ class OrderController extends Controller
         $this->orderService=$this->get("app.order_service");
         $this->userService=$this->get("app.user_service");
         $this->foodService=$this->get("app.food_service");
+        $this->mailerService=$this->get("mailer");
     }
 
     /**
@@ -131,13 +138,21 @@ class OrderController extends Controller
 
         /** @var Order $order */
         $order = new Order();
-        $order->setUser($this->userService->getUserById($userId));
+        $user = $this->userService->getUserById($userId);
+        $order->setUser($user);
         $order->setOrderDate(date('Y-m-d H:m:s'));
         foreach($orderItems as $orderItem){
             $this->addFlash('notice',$orderItem->getFood()->getId());
             $order->getOrderItem()->add($orderItem);
         }
         $this->orderService->saveOrder($order);
+        $message = Swift_Message::newInstance('Order Sent')
+            ->setFrom(array('foodorder.oe@gmail.com' => 'Food Order'))
+            ->setTo(array($user->getEmail()))
+            ->setBody('Your order was sent at '.$order->getOrderDate().". It will arrive in 65 minutes.")
+        ;
+        $this->mailerService->send($message);
+
         $request->getSession()->set("orderItems",array());
         $this->addFlash('notice', 'Order Sent');
         return $this->redirectToRoute("foods");
