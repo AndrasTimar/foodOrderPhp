@@ -72,12 +72,7 @@ class OrderService implements IOrderService
      */
     public function saveOrder($order)
     {
-
         $this->entityManager->merge($order);
-        $this->entityManager->flush();
-        foreach ($order->getOrderItem() as $item) {
-            $this->entityManager->merge($item);
-        }
         $this->entityManager->flush();
     }
 }

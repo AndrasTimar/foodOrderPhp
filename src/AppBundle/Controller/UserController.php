@@ -10,8 +10,6 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\DTO\UserDTO;
-use AppBundle\Entity\Order;
-use AppBundle\Entity\OrderItem;
 use AppBundle\Entity\User;
 use AppBundle\Service\IPasswordEncoderService;
 use AppBundle\Service\IUserService;

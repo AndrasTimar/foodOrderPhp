@@ -24,12 +24,12 @@ class OrderItem
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderItem", cascade={"persist","remove"})
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderItem", cascade={"all"})
      */
     private $order;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Food")
+     * @ORM\ManyToOne(targetEntity="Food", inversedBy="orderitem", cascade={"all"})
      */
     private $food;
 

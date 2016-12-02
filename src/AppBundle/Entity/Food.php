@@ -44,6 +44,10 @@ class Food
     private $description;
 
     /**
+     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="food", cascade={"all"})
+     */
+    private $orderitem;
+    /**
      * Get id
      *
      * @return integer
@@ -155,4 +159,45 @@ class Food
     }
 
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->orderitem = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add orderitem
+     *
+     * @param \AppBundle\Entity\OrderItem $orderitem
+     *
+     * @return Food
+     */
+    public function addOrderitem(\AppBundle\Entity\OrderItem $orderitem)
+    {
+        $this->orderitem[] = $orderitem;
+
+        return $this;
+    }
+
+    /**
+     * Remove orderitem
+     *
+     * @param \AppBundle\Entity\OrderItem $orderitem
+     */
+    public function removeOrderitem(\AppBundle\Entity\OrderItem $orderitem)
+    {
+        $this->orderitem->removeElement($orderitem);
+    }
+
+    /**
+     * Get orderitem
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrderitem()
+    {
+        return $this->orderitem;
+    }
 }

@@ -135,7 +135,7 @@ class OrderController extends Controller
         $order->setOrderDate(date('Y-m-d H:m:s'));
         foreach($orderItems as $orderItem){
             $this->addFlash('notice',$orderItem->getFood()->getId());
-            $order->addOrderItem($orderItem);
+            $order->getOrderItem()->add($orderItem);
         }
         $this->orderService->saveOrder($order);
         $request->getSession()->set("orderItems",array());

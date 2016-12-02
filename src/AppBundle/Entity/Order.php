@@ -35,7 +35,7 @@ class Order
     private $order_date;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="order", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="order", cascade={"all"})
      */
     private $orderItem;
 
@@ -114,7 +114,6 @@ class Order
     public function addOrderItem(\AppBundle\Entity\OrderItem $orderItem)
     {
         $this->orderItem[] = $orderItem;
-
         return $this;
     }
 
