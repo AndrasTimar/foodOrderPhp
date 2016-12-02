@@ -23,23 +23,34 @@ use Symfony\Component\Form\FormInterface;
  */
 class UserService implements IUserService
 {
-
+    /**
+     * @var EntityManager
+     */
     private $entityManager;
+    /**
+     * @var FormFactory
+     */
     private $formFactory;
     /**
      * @var UserRepository
      */
     private $userRepo;
+
+    /**
+     * @var PasswordEncoderService
+     */
+    private $passwordEncoder;
     /**
      * AuthenticationService constructor.
      * @param $entityManager EntityManager
      * @param $formFactory FormFactory
      */
-    public function __construct(EntityManager $entityManager,FormFactory $formFactory)
+    public function __construct(EntityManager $entityManager,FormFactory $formFactory, PasswordEncoderService $passwordEncoderService)
     {
         $this->entityManager = $entityManager;
         $this->userRepo = $entityManager->getRepository(User::class);
         $this->formFactory = $formFactory;
+        $this->passwordEncoder=$passwordEncoderService;
     }
 
     /**
@@ -61,6 +72,7 @@ class UserService implements IUserService
      */
     function login($uname, $upass)
     {
+        $upass = $this->passwordEncoder->hashPass($upass);
         $found = $this->userRepo->findByNameAndPassword($uname,$upass);
         if($found){
             return true;
@@ -74,6 +86,7 @@ class UserService implements IUserService
      */
     function register($user)
     {
+        $user->setPassword($this->passwordEncoder->hashPass($user->getPlainPassword()));
         $found = $this->userRepo->findBy(["username"=>$user->getUsername()]);
         if(!$found) {
             $this->entityManager->persist($user);

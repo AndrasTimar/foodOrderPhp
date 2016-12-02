@@ -6,7 +6,7 @@ parameters:
 services:
   app.user_service:
     class: AppBundle\Service\UserService
-    arguments: ["@doctrine.orm.entity_manager", "@form.factory"]
+    arguments: ["@doctrine.orm.entity_manager", "@form.factory", "@app.password_encoder"]
   app.password_encoder:
     class: AppBundle\Service\PasswordEncoderService
   app.address_service:

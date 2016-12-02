@@ -51,7 +51,7 @@ class UserController extends Controller
             $formInterface->handleRequest($request);
             if ($formInterface->isSubmitted() && $formInterface->isValid()) {
                 $username = $userDTO->username;
-                $password = $this->passwordEncoder->hashPass($userDTO->password);
+                $password = $userDTO->password;
                 if ($username != null && $password != null) {
                     $success = $this->userService->login($username, $password);
                     if ($success) {
@@ -79,10 +79,6 @@ class UserController extends Controller
 
         $formInterface->handleRequest($request);
         if ($formInterface->isSubmitted() && $formInterface->isValid()) {
-
-            $password = $this->get('app.password_encoder')
-                ->hashPass($user->getPlainPassword());
-            $user->setPassword($password);
             $user->setAdmin(false);
             if($this->userService->register($user)){
                 $this->addFlash('notice', 'Success, please log in!');

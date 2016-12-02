@@ -44,16 +44,14 @@ class AddressController extends Controller
     public function editAddress(Request $request){
 
         $userName = $request->getSession()->get("user");
-        if(!$userName){ 
+        if(!$userName){
             return $this->redirectToRoute("login");
         }
         $user = $this->userService->getUserByName($userName);
-        $addressId = $user->getAddress();
+        $address = $user->getAddress();
 
-        if(!$addressId){
+        if(!$address){
             $address = new Address();
-        }else{
-            $address = $this->addressService->getAddressById($addressId);
         }
         $formInterface = $this->addressService->getAddressForm($address);
 
