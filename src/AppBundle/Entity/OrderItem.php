@@ -23,6 +23,11 @@ class OrderItem
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderItem")
+     */
+    private $order;
+
+    /**
      * @ORM\OneToOne(targetEntity="Food")
      */
     private $food;
@@ -88,5 +93,29 @@ class OrderItem
     public function getFood()
     {
         return $this->food;
+    }
+
+    /**
+     * Set order
+     *
+     * @param \AppBundle\Entity\Order $order
+     *
+     * @return OrderItem
+     */
+    public function setOrder(\AppBundle\Entity\Order $order = null)
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return \AppBundle\Entity\Order
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }

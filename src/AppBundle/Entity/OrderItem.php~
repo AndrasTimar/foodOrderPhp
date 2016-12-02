@@ -23,6 +23,11 @@ class OrderItem
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderItem")
+     */
+    private $order;
+
+    /**
      * @ORM\OneToOne(targetEntity="Food")
      */
     private $food;
@@ -31,4 +36,62 @@ class OrderItem
      * @ORM\Column(type="integer")
      */
     private $amount;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set amount
+     *
+     * @param integer $amount
+     *
+     * @return OrderItem
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * Get amount
+     *
+     * @return integer
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * Set food
+     *
+     * @param \AppBundle\Entity\Food $food
+     *
+     * @return OrderItem
+     */
+    public function setFood(\AppBundle\Entity\Food $food = null)
+    {
+        $this->food = $food;
+
+        return $this;
+    }
+
+    /**
+     * Get food
+     *
+     * @return \AppBundle\Entity\Food
+     */
+    public function getFood()
+    {
+        return $this->food;
+    }
 }

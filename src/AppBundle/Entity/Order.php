@@ -33,6 +33,11 @@ class Order
     private $order_date;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="order")
+     */
+    private $orderItem;
+
+    /**
      * Get id
      *
      * @return integer
@@ -88,5 +93,46 @@ class Order
     public function getUser()
     {
         return $this->user;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->orderItem = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add orderItem
+     *
+     * @param \AppBundle\Entity\OrderItem $orderItem
+     *
+     * @return Order
+     */
+    public function addOrderItem(\AppBundle\Entity\OrderItem $orderItem)
+    {
+        $this->orderItem[] = $orderItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove orderItem
+     *
+     * @param \AppBundle\Entity\OrderItem $orderItem
+     */
+    public function removeOrderItem(\AppBundle\Entity\OrderItem $orderItem)
+    {
+        $this->orderItem->removeElement($orderItem);
+    }
+
+    /**
+     * Get orderItem
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrderItem()
+    {
+        return $this->orderItem;
     }
 }

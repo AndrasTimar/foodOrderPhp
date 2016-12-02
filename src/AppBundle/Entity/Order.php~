@@ -33,6 +33,11 @@ class Order
     private $order_date;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="order")
+     */
+    private $orderItem;
+
+    /**
      * Get id
      *
      * @return integer
