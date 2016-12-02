@@ -1,0 +1,19 @@
+{# app/Resources/views/song/songdsheet.html.twig #}
+{# @var food \AppBundle\Entity\Food #}
+
+{% extends 'FoodOrder/baseform.html.twig' %}
+
+{% block orderbody %}
+    <table border="1">
+        <tr><th>Available:</th><td>
+                {% if food.getAvailable() %}
+                    YES
+                {% else %}
+                    NO
+                {% endif %}
+            </td></tr>
+        <tr><th>Name:</th><td> {{ food.getName() }} </td></tr>
+        <tr><th>Cost:</th><td> {{ food.getCost() }} </td></tr>
+        <tr><th>Description:</th><td> {{ food.getDescription() }} </td></tr>
+    </table>
+{% endblock %}

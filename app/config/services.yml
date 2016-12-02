@@ -12,6 +12,9 @@ services:
   app.address_service:
       class: AppBundle\Service\AddressService
       arguments: ["@doctrine.orm.entity_manager", "@form.factory"]
+  app.food_service:
+      class: AppBundle\Service\FoodService
+      arguments: ['@doctrine.orm.entity_manager', '@form.factory']
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

@@ -16,7 +16,7 @@ interface IUserService
     /**
      * @param $uname string
      * @param $upass string
-     * @return boolean
+     * @return User
      */
     function login($uname, $upass);
 

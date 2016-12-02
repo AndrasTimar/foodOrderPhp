@@ -36,7 +36,7 @@ class UserController extends Controller
      * @Route("/logout", name="logout")
      */
     public function logout(Request $request){
-        $request->getSession()->set("user",null);
+        $request->getSession()->clear();
         return $this->redirectToRoute("login");
     }
 
@@ -52,18 +52,17 @@ class UserController extends Controller
             if ($formInterface->isSubmitted() && $formInterface->isValid()) {
                 $username = $userDTO->username;
                 $password = $userDTO->password;
-                if ($username != null && $password != null) {
-                    $success = $this->userService->login($username, $password);
-                    if ($success) {
-                        $request->getSession()->set("user", $username);
-                        $this->addFlash('notice', 'Login Successful! Welcome, ' . $request->getSession()->get("user"));
-                        return $this->redirectToRoute("address_mod");
-                    }
+                $user = $this->userService->login($username, $password);
+                if ($user) {
+                    $request->getSession()->set("user", $username);
+                    $request->getSession()->set("admin",$user->getAdmin());
+                    $this->addFlash('notice', 'Login Successful! Welcome, ' . $request->getSession()->get("user"));
+                    return $this->redirectToRoute("address_mod");
                 }
                 $this->addFlash('notice', 'Invalid Credentials!');
                 return $this->redirectToRoute("login");
             }
-            return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(),"loggedIn"=>false));
+            return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(),"loggedIn"=>false,"admin"=>$request->getSession()->get("admin")));
         }
 
         return $this->redirectToRoute("address_mod");
@@ -72,14 +71,14 @@ class UserController extends Controller
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request)
+    public function register(Request $request, $adminreg = false)
     {
         $user = new User();
         $formInterface = $this->userService->getRegForm($user);
 
         $formInterface->handleRequest($request);
         if ($formInterface->isSubmitted() && $formInterface->isValid()) {
-            $user->setAdmin(false);
+            $user->setAdmin($adminreg);
             if($this->userService->register($user)){
                 $this->addFlash('notice', 'Success, please log in!');
                 return $this->redirectToRoute('login');
@@ -90,7 +89,7 @@ class UserController extends Controller
             return $this->redirectToRoute('register');
         }
 
-        return $this->render('baseform.html.twig', array("form"=>$formInterface->createView()) );
+        return $this->render('FoodOrder/baseform.html.twig', array("form"=>$formInterface->createView(),"loggedIn"=>false,"admin"=>$request->getSession()->get("admin")) );
 
     }
 

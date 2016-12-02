@@ -1,6 +1,8 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\User;
+
 /**
  * Created by PhpStorm.
  * User: bandi
@@ -9,11 +11,16 @@ namespace AppBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param $username
+     * @param $hashedPassword
+     * @return User
+     */
     public function findByNameAndPassword($username, $hashedPassword){
        return $this->createQueryBuilder('u')
             ->where('u.username = :uname and u.password = :hashpass')
             ->setParameter('uname', "{$username}")
             ->setParameter('hashpass', "{$hashedPassword}")
-            ->getQuery() ->getResult();
+            ->getQuery() ->getOneOrNullResult();
     }
 }

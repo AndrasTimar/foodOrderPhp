@@ -25,18 +25,18 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=100)
      * @
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=100)
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=100)
      */
     private $email;
 
@@ -54,6 +54,11 @@ class User
      * @ORM\Column(type="boolean")
      */
     private $admin;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Order", mappedBy="user")
+     */
+    private $order;
 
     private $plainPassword;
 
@@ -228,5 +233,46 @@ class User
     public function getAdmin()
     {
         return $this->admin;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->order = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add order
+     *
+     * @param \AppBundle\Entity\Order $order
+     *
+     * @return User
+     */
+    public function addOrder(\AppBundle\Entity\Order $order)
+    {
+        $this->order[] = $order;
+
+        return $this;
+    }
+
+    /**
+     * Remove order
+     *
+     * @param \AppBundle\Entity\Order $order
+     */
+    public function removeOrder(\AppBundle\Entity\Order $order)
+    {
+        $this->order->removeElement($order);
+    }
+
+    /**
+     * Get order
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }

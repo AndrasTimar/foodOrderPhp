@@ -68,16 +68,13 @@ class UserService implements IUserService
     /**
      * @param $uname string
      * @param $upass string
-     * @return boolean
+     * @return User
      */
     function login($uname, $upass)
     {
         $upass = $this->passwordEncoder->hashPass($upass);
-        $found = $this->userRepo->findByNameAndPassword($uname,$upass);
-        if($found){
-            return true;
-        }
-        return false;
+        return $this->userRepo->findByNameAndPassword($uname,$upass);
+
     }
 
     /**

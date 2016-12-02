@@ -56,7 +56,7 @@ class AddressController extends Controller
         $formInterface = $this->addressService->getAddressForm($address);
 
         $formInterface->handleRequest($request);
-        // AUTOMATIC CSRF DETECTION!!!
+
         if ($formInterface->isSubmitted() && $formInterface->isValid())
         {
             $this->addressService->saveAddress($address);
@@ -65,7 +65,7 @@ class AddressController extends Controller
             return $this->redirectToRoute("address_mod");
         }
 
-        return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(),"loggedIn"=>true));
+        return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(),"loggedIn"=>true,"admin"=>$request->getSession()->get("admin")));
 
 
     }

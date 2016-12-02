@@ -17,9 +17,15 @@
         <p><a href="{{ path('login') }}"> Log in</a></p>
         <p><a href="{{ path('register') }}"> Register </a></p>
         {% else %}
-        <p><a href="{{ path('address_mod') }}"> Manage Address</a></p>
-        <p><a href="{{ path('address_mod') }}"> Place Order</a></p>
-        <p><a href="{{ path('logout') }}"> Logout</a></p>
+            {% if not admin %}
+                <p><a href="{{ path('address_mod') }}"> Change My Address</a></p>
+                <p><a href="{{ path('address_mod') }}"> Place Order</a></p>
+                {% else %}
+                    <p><a href="{{ path('food') }}"> Manage Foods</a></p>
+                    <p><a href="{{ path('food') }}"> Manage Orders</a></p>
+
+            {% endif %}
+             <p><a href="{{ path('logout') }}"> Logout</a></p>
     {% endif %}
     <hr />
 {% endblock %}

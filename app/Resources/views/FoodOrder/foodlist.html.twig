@@ -1,0 +1,31 @@
+
+{% extends 'FoodOrder/baseform.html.twig' %}
+
+{% block orderbody %}
+    <h1>List of foods</h1>
+    <p><a href="{{ path('foodedit') }}">ADD NEW FOOD</a></p>
+    <hr />
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Cost</th>
+            <th>Available</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for food in foodlist %}
+            {# @var song \AppBundle\Entity\Food #}
+            <tr>
+                <td>{{ food.getName() }}</td>
+                <td>{{ food.getCost() }}</td>
+                <td>{{ food.getAvailable() }}</td>
+                <td><a href="{{ path('foodshow', { 'foodId': food.getId() }) }}">Show</a></td>
+                <td><a href="{{ path('foodedit', { 'foodId': food.getId() }) }}">Edit</a></td>
+                <td><a href="{{ path('fooddel', { 'foodId': food.getId() }) }}">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

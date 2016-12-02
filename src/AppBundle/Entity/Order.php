@@ -23,7 +23,7 @@ class Order
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="order")
      */
     private $user;
 
