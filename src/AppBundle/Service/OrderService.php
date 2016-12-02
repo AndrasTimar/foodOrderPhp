@@ -77,6 +77,7 @@ class OrderService implements IOrderService
      */
     public function saveOrder($order)
     {
+        $order->setOrderDate(new \DateTime(date("Y-m-d H:i:s")));
         $this->entityManager->merge($order);
         $this->entityManager->flush();
     }

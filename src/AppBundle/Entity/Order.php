@@ -30,9 +30,9 @@ class Order
     private $user;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="datetime")
      */
-    private $order_date;
+    private $orderdate;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="order", cascade={"all"})
@@ -52,13 +52,13 @@ class Order
     /**
      * Set orderDate
      *
-     * @param string $orderDate
+     * @param \DateTime $orderDate
      *
      * @return Order
      */
     public function setOrderDate($orderDate)
     {
-        $this->order_date = $orderDate;
+        $this->orderdate = $orderDate;
 
         return $this;
     }
@@ -66,11 +66,11 @@ class Order
     /**
      * Get orderDate
      *
-     * @return string
+     * @return \DateTime
      */
     public function getOrderDate()
     {
-        return $this->order_date;
+        return $this->orderdate;
     }
 
     /**

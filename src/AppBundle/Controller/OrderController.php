@@ -140,16 +140,16 @@ class OrderController extends Controller
         $order = new Order();
         $user = $this->userService->getUserById($userId);
         $order->setUser($user);
-        $order->setOrderDate(date('Y-m-d H:m:s'));
         foreach($orderItems as $orderItem){
             $this->addFlash('notice',$orderItem->getFood()->getId());
             $order->getOrderItem()->add($orderItem);
         }
         $this->orderService->saveOrder($order);
+
         $message = Swift_Message::newInstance('Order Sent')
             ->setFrom(array('foodorder.oe@gmail.com' => 'Food Order'))
             ->setTo(array($user->getEmail()))
-            ->setBody('Your order was sent at '.$order->getOrderDate().". It will arrive in 65 minutes.")
+            ->setBody('Your order was sent at '.$order->getOrderDate()->format("d/m/Y H:i:s").". It will arrive in 65 minutes.")
         ;
         $this->mailerService->send($message);
 

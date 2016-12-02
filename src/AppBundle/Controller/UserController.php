@@ -45,7 +45,8 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
-        if (!$request->getSession()->get("userId")) {
+        $userId = $request->getSession()->get("userId");
+        if (!$userId) {
             $userDTO = new UserDTO();
             $formInterface = $this->userService->getLoginForm($userDTO);
             $formInterface->handleRequest($request);
@@ -71,7 +72,10 @@ class UserController extends Controller
 
             return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => false, "admin" => false));
         }
-
+        $user = $this->userService->getUserById($userId);
+        if($user->getAddress()){
+            return $this->redirectToRoute("foods");
+        }
         return $this->redirectToRoute("address_mod");
     }
 
