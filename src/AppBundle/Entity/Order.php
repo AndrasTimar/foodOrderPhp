@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
+ * @ORM\Table(name="orders")
  * @package AppBundle\Entity
  */
 class Order
@@ -29,7 +30,7 @@ class Order
     private $user;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string")
      */
     private $order_date;
 
@@ -51,7 +52,7 @@ class Order
     /**
      * Set orderDate
      *
-     * @param \DateTime $orderDate
+     * @param string $orderDate
      *
      * @return Order
      */
@@ -65,7 +66,7 @@ class Order
     /**
      * Get orderDate
      *
-     * @return \DateTime
+     * @return string
      */
     public function getOrderDate()
     {

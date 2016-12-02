@@ -51,12 +51,9 @@ class AddressController extends Controller
         $address = $user->getAddress();
 
         if(!$address){
-            $this->addFlash('notice', 'New Address!');
             $address = new Address();
         }
-        else{
-            $this->addFlash('notice', 'Old Address!'.$user->getAddress()->getCity());
-        }
+
         $formInterface = $this->addressService->getAddressForm($address);
 
         $formInterface->handleRequest($request);

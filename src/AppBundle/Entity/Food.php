@@ -148,4 +148,11 @@ class Food
     {
         return $this->description;
     }
+
+    function __toString()
+    {
+        return $this->id." ".$this->name;
+    }
+
+
 }

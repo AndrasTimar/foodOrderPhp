@@ -47,7 +47,7 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
-        if (!$request->getSession()->get("user")) {
+        if (!$request->getSession()->get("userId")) {
             $userDTO = new UserDTO();
             $formInterface = $this->userService->getLoginForm($userDTO);
             $formInterface->handleRequest($request);

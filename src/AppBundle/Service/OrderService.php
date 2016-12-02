@@ -63,7 +63,7 @@ class OrderService implements IOrderService
             'choice_value' => 'id'
         ));
 
-        $form->add("register", SubmitType::class, array('label'=>'Save'));
+        $form->add("send", SubmitType::class, array('label'=>'Save'));
         return $form->getForm();
     }
 
@@ -72,7 +72,12 @@ class OrderService implements IOrderService
      */
     public function saveOrder($order)
     {
-        $this->entityManager->persist($order);
+
+        $this->entityManager->merge($order);
+        $this->entityManager->flush();
+        foreach ($order->getOrderItem() as $item) {
+            $this->entityManager->merge($item);
+        }
         $this->entityManager->flush();
     }
 }

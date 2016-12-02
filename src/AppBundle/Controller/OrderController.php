@@ -11,14 +11,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Order;
 use AppBundle\Entity\OrderItem;
-use AppBundle\Entity\User;
 use AppBundle\Service\IFoodService;
 use AppBundle\Service\IOrderService;
 use AppBundle\Service\IUserService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class OrderController extends Controller
@@ -77,7 +75,7 @@ class OrderController extends Controller
             $orderItems[] = $orderItem;
             $request->getSession()->set("orderItems",$orderItems);
             $this->addFlash('notice', 'Success!');
-            return $this->redirectToRoute("foods");
+            return $this->redirectToRoute("cart");
         }
 
         return $this->render('FoodOrder/baseform.html.twig', array("form"=>$formInterface->createView(),"loggedIn"=>true,"admin"=>$user->getAdmin()) );
@@ -134,11 +132,13 @@ class OrderController extends Controller
         /** @var Order $order */
         $order = new Order();
         $order->setUser($this->userService->getUserById($userId));
-        $order->setOrderDate(date('Y-m-d H:i:s'));
+        $order->setOrderDate(date('Y-m-d H:m:s'));
         foreach($orderItems as $orderItem){
-            $order[]->$orderItem;
+            $this->addFlash('notice',$orderItem->getFood()->getId());
+            $order->addOrderItem($orderItem);
         }
         $this->orderService->saveOrder($order);
+        $request->getSession()->set("orderItems",array());
         $this->addFlash('notice', 'Order Sent');
         return $this->redirectToRoute("foods");
     }
