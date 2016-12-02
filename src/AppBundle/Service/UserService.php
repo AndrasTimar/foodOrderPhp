@@ -105,7 +105,7 @@ class UserService implements IUserService
         $form->add("plainPassword", PasswordType::class);
         $form->add("email", EmailType::class);
         $form->add("realName", TextType::class);
-        $form->add("register", SubmitType::class, array('label'=>'Register'));
+        $form->add("register", SubmitType::class, array('label'=>'Save'));
         return $form->getForm();
     }
 

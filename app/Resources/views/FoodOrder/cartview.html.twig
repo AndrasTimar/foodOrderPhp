@@ -1,0 +1,30 @@
+{% extends 'FoodOrder/baseform.html.twig' %}
+{# @var itemList \AppBundle\Entity\OrderItem[] #}
+{# @var totalCost integer #}
+
+{% block orderbody %}
+    <h1>List of foods</h1>
+        <p><a href="{{ path('cartempty') }}">Empty Cart</a></p>
+    <hr />
+    <table>
+        <thead>
+        <tr>
+            <th>Food</th>
+            <th>Cost</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for orderItem in itemList %}
+                {# @var orderItem \AppBundle\Entity\OrderItem #}
+                <tr>
+                    <td>{{ orderItem.food.getName() }}</td>
+                    <td>{{ orderItem.food.cost }}</td>
+                    <td>{{ orderItem.amount }}</td>
+                </tr>
+        {% endfor %}
+        <br />
+        Total cost: {{ totalCost }}
+        </tbody>
+    </table>
+{% endblock %}

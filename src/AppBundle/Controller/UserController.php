@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\DTO\UserDTO;
 use AppBundle\Entity\Order;
+use AppBundle\Entity\OrderItem;
 use AppBundle\Entity\User;
 use AppBundle\Service\IPasswordEncoderService;
 use AppBundle\Service\IUserService;
@@ -57,7 +58,7 @@ class UserController extends Controller
                 $user = $this->userService->login($username, $password);
                 if ($user) {
                     $request->getSession()->set("userId", $user->getId());
-                    $request->getSession()->set("order", new Order());
+                    $request->getSession()->set("orderItems", array());
                     $this->addFlash('notice', 'Login Successful! Welcome, ' . $user->getUsername());
                     if(!$user->getAddress() && !$user->getAdmin()) {
                         return $this->redirectToRoute("address_mod");
@@ -78,11 +79,15 @@ class UserController extends Controller
 
     /**
      * @Route("/register", name="register")
+     * @Route("/account", name="account")
      */
     public function register(Request $request, $adminreg = false)
     {
-        $user = $request->getSession()->get("user");
-        if(!$user){
+        $userId = $request->getSession()->get("userId");
+        if($userId){
+            $user = $this->userService->getUserById($userId);
+        }
+        else{
             $user = new User();
         }
         $formInterface = $this->userService->getRegForm($user);
@@ -92,7 +97,7 @@ class UserController extends Controller
         if ($formInterface->isSubmitted() && $formInterface->isValid()) {
             $user->setAdmin($adminreg);
             if ($this->userService->register($user)) {
-                $this->addFlash('notice', 'Success, please log in!');
+                $this->addFlash('notice', 'Success!');
                 if(!$user->getAddress()){
                     return $this->redirectToRoute('login');
                 }
@@ -103,7 +108,7 @@ class UserController extends Controller
 
             return $this->redirectToRoute('register');
         }
-        return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => false, "admin" => $user->getAdmin()));
+        return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $user->getAdmin()));
 
     }
 

@@ -32,7 +32,7 @@
                     <td><a href="{{ path('foodedit', { 'foodId': food.getId() }) }}">Edit</a></td>
                     <td><a href="{{ path('fooddel', { 'foodId': food.getId() }) }}">Delete</a></td>
                     {% else %}
-                        <td><a href="{{ path('addfood', { 'foodId': food.getId() }) }}">Pick Food</a></td>
+                        <td><a href="{{ path('addfood', { 'foodId': food.getId() }) }}">Add to Cart</a></td>
                 {% endif %}
                 <td><a href="{{ path('foodshow', { 'foodId': food.getId() }) }}">Show</a></td>
             </tr>

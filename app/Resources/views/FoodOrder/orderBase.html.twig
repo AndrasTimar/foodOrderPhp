@@ -19,13 +19,14 @@
         {% else %}
             {% if not admin %}
                 <p><a href="{{ path('address_mod') }}"> Change My Address</a></p>
-                <p><a href="{{ path('address_mod') }}"> Place Order</a></p>
+                <p><a href="{{ path('cart') }}"> View Cart</a></p>
                 {% else %}
-                    <p><a href="{{ path('foods') }}"> Manage Foods</a></p>
-                    <p><a href="{{ path('foods') }}"> Manage Orders</a></p>
+                    <p><a href="{{ path('orders') }}"> Manage Orders</a></p>
 
             {% endif %}
-             <p><a href="{{ path('logout') }}"> Logout</a></p>
+            <p><a href="{{ path('foods') }}"> See Foods</a></p>
+            <p><a href="{{ path('account') }}"> Account settings</a></p>
+            <p><a href="{{ path('logout') }}"> Logout</a></p>
     {% endif %}
     <hr />
 {% endblock %}

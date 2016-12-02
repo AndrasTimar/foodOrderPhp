@@ -41,7 +41,13 @@ class FoodController extends Controller
      * @Route("/foods/list", name="foodlist")
      */
     public function getList(Request $request) {
-        $user = $this->userService->getUserById($request->getSession()->get("userId"));
+
+        $userId = $request->getSession()->get("userId");
+        if(!$userId){
+            $this->addFlash('notice', 'Please log in!');
+            return $this->redirectToRoute("login");
+        }
+        $user = $this->userService->getUserById($userId);
         $arr = $this->foodService->getAllFoods();
         return $this->render(':FoodOrder:foodlist.html.twig', array('foodlist'=>$arr,"loggedIn"=>true,"admin"=>$user->getAdmin()));
     }
@@ -78,6 +84,11 @@ class FoodController extends Controller
      * @Route("/foods/{foodId}", name="foodshow")
      */
     public function getDatasheet($foodId, Request $request){
+        $userId = $request->getSession()->get("userId");
+        if(!$userId){
+            $this->addFlash('notice', 'Please log in!');
+            return $this->redirectToRoute("login");
+        }
         $food = $this->foodService->getFoodById($foodId);
         $user = $this->userService->getUserById($request->getSession()->get("userId"));
         return $this->render(':FoodOrder:foodsheet.html.twig', array("food"=>$food,"loggedIn"=>true,"admin"=>$user->getAdmin()));
@@ -100,6 +111,6 @@ class FoodController extends Controller
      * return boolean
      */
     public function isAdmin(Request $request){
-       return $request->getSession()->get("user")->getAdmin();
+       return $this->userService->getUserById($request->getSession()->get("userId"))->getAdmin();
     }
 }
