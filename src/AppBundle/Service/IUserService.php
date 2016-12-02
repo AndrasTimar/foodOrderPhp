@@ -48,7 +48,12 @@ interface IUserService
     /**
      * @param $address Address
      * @param $user User
-     * @return mixed
      */
     public function updateAddress($address, $user);
+
+    /**
+     * @param $userId integer
+     * @return User
+     */
+    public function getUserById($userId);
 }

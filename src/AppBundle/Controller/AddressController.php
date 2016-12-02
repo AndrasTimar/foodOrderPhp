@@ -11,10 +11,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Address;
 use AppBundle\Entity\User;
-use AppBundle\Service\AddressService;
 use AppBundle\Service\IAddressService;
 use AppBundle\Service\IUserService;
-use AppBundle\Service\UserService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -43,15 +41,21 @@ class AddressController extends Controller
      */
     public function editAddress(Request $request){
 
-        $userName = $request->getSession()->get("user");
-        if(!$userName){
-            return $this->redirectToRoute("login");
+        /** @var User $user */
+        $user = $user = $this->userService->getUserById($request->getSession()->get("userId"));
+        if(!$user){
+                $this->addFlash('notice', 'Please log in!');
+                return $this->redirectToRoute("login");
         }
-        $user = $this->userService->getUserByName($userName);
+        /** @var Address $address */
         $address = $user->getAddress();
 
         if(!$address){
+            $this->addFlash('notice', 'New Address!');
             $address = new Address();
+        }
+        else{
+            $this->addFlash('notice', 'Old Address!'.$user->getAddress()->getCity());
         }
         $formInterface = $this->addressService->getAddressForm($address);
 
@@ -62,10 +66,10 @@ class AddressController extends Controller
             $this->addressService->saveAddress($address);
             $this->userService->updateAddress($address, $user);
             $this->addFlash('notice', 'Address SAVED!');
-            return $this->redirectToRoute("address_mod");
+            return $this->redirectToRoute("foods");
         }
 
-        return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(),"loggedIn"=>true,"admin"=>$request->getSession()->get("admin")));
+        return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(),"loggedIn"=>true,"admin"=>$user->getAdmin()));
 
 
     }

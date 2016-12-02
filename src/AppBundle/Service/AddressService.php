@@ -52,9 +52,6 @@ class AddressService implements IAddressService
      * @param $address Address
      * @return \Symfony\Component\Form\FormInterface
      */
-
-
-
     public function getAddressForm($address)
     {
         $form = $this->formFactory->createBuilder(FormType::class, $address);
@@ -70,9 +67,13 @@ class AddressService implements IAddressService
         return $form->getForm();
     }
 
+    /**
+     * @param $address Address
+     */
     public function saveAddress($address)
     {
-       $this->entityManager->persist($address);
+        $this->entityManager->persist($address);
+        $this->entityManager->flush();
     }
 
     public function getAddressById($addressId)

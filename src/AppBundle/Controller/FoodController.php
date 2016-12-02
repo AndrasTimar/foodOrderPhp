@@ -11,7 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Food;
 use AppBundle\Service\IFoodService;
-use Doctrine\Bundle\DoctrineBundle\Command\Proxy\ClearQueryCacheDoctrineCommand;
+use AppBundle\Service\IUserService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,24 +24,26 @@ class FoodController extends Controller
      */
     private $foodService;
 
+    /**
+     * @var IUserService
+     */
+    private $userService;
 
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
         $this->foodService=$this->get("app.food_service");
+        $this->userService=$this->get("app.user_service");
     }
 
     /**
-     * @Route("/foods", name="food")
+     * @Route("/foods", name="foods")
      * @Route("/foods/list", name="foodlist")
      */
     public function getList(Request $request) {
-        if(!$this->isAdmin($request)){
-            $this->addFlash('notice', 'Log in as admin for this action!');
-            return $this->redirectToRoute("login");
-        }
+        $user = $this->userService->getUserById($request->getSession()->get("userId"));
         $arr = $this->foodService->getAllFoods();
-        return $this->render(':FoodOrder:foodlist.html.twig', array('foodlist'=>$arr,"loggedIn"=>true,"admin"=>$request->getSession()->get("admin")));
+        return $this->render(':FoodOrder:foodlist.html.twig', array('foodlist'=>$arr,"loggedIn"=>true,"admin"=>$user->getAdmin()));
     }
 
     /**
@@ -68,20 +70,17 @@ class FoodController extends Controller
             $this->addFlash('notice', 'Food Saved!');
             return $this->redirectToRoute("foodlist");
         }
-
-        return $this->render('FoodOrder/baseform.html.twig', array("form"=>$formInterface->createView(),"loggedIn"=>true,"admin"=>$request->getSession()->get("admin")) );
+        $user = $this->userService->getUserById($request->getSession()->get("userId"));
+        return $this->render('FoodOrder/baseform.html.twig', array("form"=>$formInterface->createView(),"loggedIn"=>true,"admin"=>$user->getAdmin()) );
     }
 
     /**
      * @Route("/foods/{foodId}", name="foodshow")
      */
     public function getDatasheet($foodId, Request $request){
-        if(!$this->isAdmin($request)){
-            $this->addFlash('notice', 'Log in as admin for this action!');
-            return $this->redirectToRoute("login");
-        }
         $food = $this->foodService->getFoodById($foodId);
-        return $this->render(':FoodOrder:foodsheet.html.twig', array("food"=>$food,"loggedIn"=>true,"admin"=>$request->getSession()->get("admin")));
+        $user = $this->userService->getUserById($request->getSession()->get("userId"));
+        return $this->render(':FoodOrder:foodsheet.html.twig', array("food"=>$food,"loggedIn"=>true,"admin"=>$user->getAdmin()));
     }
 
     /**
@@ -101,6 +100,6 @@ class FoodController extends Controller
      * return boolean
      */
     public function isAdmin(Request $request){
-       return $request->getSession()->get("admin");
+       return $request->getSession()->get("user")->getAdmin();
     }
 }

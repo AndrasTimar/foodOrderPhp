@@ -118,13 +118,27 @@ class UserService implements IUserService
     }
 
     /**
+     * @param $userId integer
+     * @return User
+     */
+    public function getUserById($userId){
+        return $this->userRepo->find($userId);
+    }
+
+    /**
      * @param $address Address
      * @param $user User
      */
     public function updateAddress($address, $user)
     {
         $user->setAddress($address);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $queryBuilder = $this->userRepo->createQueryBuilder("u");
+        $queryBuilder->update()
+            ->set("u.address",":addid")
+            ->where("u.id = :uid")
+            ->setParameter('addid',$address->getId())
+            ->setParameter("uid",$user->getId())
+            ->getQuery()
+            ->execute();
     }
 }

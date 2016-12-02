@@ -3,7 +3,9 @@
 
 {% block orderbody %}
     <h1>List of foods</h1>
+    {% if admin %}
     <p><a href="{{ path('foodedit') }}">ADD NEW FOOD</a></p>
+    {% endif %}
     <hr />
     <table>
         <thead>
@@ -16,15 +18,25 @@
         </thead>
         <tbody>
         {% for food in foodlist %}
+            {% if admin or food.available %}
             {# @var song \AppBundle\Entity\Food #}
             <tr>
                 <td>{{ food.getName() }}</td>
                 <td>{{ food.getCost() }}</td>
-                <td>{{ food.getAvailable() }}</td>
+                {% if admin %}
+                    <td>{% if food.getAvailable() %}
+                        YES
+                    {% else %}
+                        NO
+                    {% endif %}</td>
+                    <td><a href="{{ path('foodedit', { 'foodId': food.getId() }) }}">Edit</a></td>
+                    <td><a href="{{ path('fooddel', { 'foodId': food.getId() }) }}">Delete</a></td>
+                    {% else %}
+                        <td><a href="{{ path('addfood', { 'foodId': food.getId() }) }}">Pick Food</a></td>
+                {% endif %}
                 <td><a href="{{ path('foodshow', { 'foodId': food.getId() }) }}">Show</a></td>
-                <td><a href="{{ path('foodedit', { 'foodId': food.getId() }) }}">Edit</a></td>
-                <td><a href="{{ path('fooddel', { 'foodId': food.getId() }) }}">Delete</a></td>
             </tr>
+            {% endif %}
         {% endfor %}
         </tbody>
     </table>

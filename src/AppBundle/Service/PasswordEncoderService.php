@@ -17,6 +17,7 @@ class PasswordEncoderService implements IPasswordEncoderService
      */
     function hashPass($pass)
     {
-        return sha1($pass);
+        $salt = "1237964892adjnhafil7f3hjfs";
+        return md5($pass.$salt);
     }
 }
