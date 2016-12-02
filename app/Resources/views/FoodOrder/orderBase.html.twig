@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Food Ordering App
+{% endblock %}
+
+{% block body %}
+
+    {% for flash_message in app.session.flashbag.get('notice') %}
+        <div class="flash-notice">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
+
+    {% block orderbody %}{% endblock %}
+    {% if not loggedIn %}
+        <p><a href="{{ path('login') }}"> Log in</a></p>
+        <p><a href="{{ path('register') }}"> Register </a></p>
+        {% else %}
+        <p><a href="{{ path('address_mod') }}"> Manage Address</a></p>
+        <p><a href="{{ path('address_mod') }}"> Place Order</a></p>
+        <p><a href="{{ path('logout') }}"> Logout</a></p>
+    {% endif %}
+    <hr />
+{% endblock %}

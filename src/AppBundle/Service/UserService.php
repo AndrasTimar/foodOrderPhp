@@ -3,6 +3,7 @@
 namespace  AppBundle\Service;
 use AppBundle\AppBundle;
 use AppBundle\DTO\UserDTO;
+use AppBundle\Entity\Address;
 use AppBundle\Entity\User;
 use AppBundle\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
@@ -20,7 +21,7 @@ use Symfony\Component\Form\FormInterface;
  * Date: 11/30/2016
  * Time: 16:52
  */
-class AuthenticationService implements IAuthenticationService
+class UserService implements IUserService
 {
 
     private $entityManager;
@@ -96,5 +97,24 @@ class AuthenticationService implements IAuthenticationService
         $form->add("realName", TextType::class);
         $form->add("register", SubmitType::class, array('label'=>'Register'));
         return $form->getForm();
+    }
+
+    /**
+     * @param $username String
+     * @return User
+     */
+    public function getUserByName($username){
+        return $this->userRepo->findOneBy(["username"=>$username]);
+    }
+
+    /**
+     * @param $address Address
+     * @param $user User
+     */
+    public function updateAddress($address, $user)
+    {
+        $user->setAddress($address);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 }

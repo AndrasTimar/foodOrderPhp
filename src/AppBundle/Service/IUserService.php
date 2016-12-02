@@ -1,6 +1,7 @@
 <?php
 
 namespace  AppBundle\Service;
+use AppBundle\Entity\Address;
 use AppBundle\Entity\User;
 use Symfony\Component\Form\FormInterface;
 
@@ -10,7 +11,7 @@ use Symfony\Component\Form\FormInterface;
  * Date: 11/30/2016
  * Time: 16:49
  */
-interface IAuthenticationService
+interface IUserService
 {
     /**
      * @param $uname string
@@ -37,4 +38,17 @@ interface IAuthenticationService
      * @return boolean
      */
     function register($user);
+
+    /**
+     * @param $username String
+     * @return User
+     */
+    public function getUserByName($username);
+
+    /**
+     * @param $address Address
+     * @param $user User
+     * @return mixed
+     */
+    public function updateAddress($address, $user);
 }

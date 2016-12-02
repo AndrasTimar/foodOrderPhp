@@ -11,22 +11,21 @@ namespace AppBundle\Controller;
 
 use AppBundle\DTO\UserDTO;
 use AppBundle\Entity\User;
-use AppBundle\Service\IAuthenticationService;
+use AppBundle\Service\IUserService;
 use AppBundle\Service\IPasswordEncoderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AuthenticationController extends Controller
+class UserController extends Controller
 {
 
     /**
-     * @var IAuthenticationService
+     * @var IUserService
      */
-    private $authenticationService;
+    private $userService;
 
     /**
      * @var IPasswordEncoderService
@@ -48,26 +47,26 @@ class AuthenticationController extends Controller
     {
         if(!$request->getSession()->get("user")) {
             $userDTO = new UserDTO();
-            $formInterface = $this->authenticationService->getLoginForm($userDTO);
+            $formInterface = $this->userService->getLoginForm($userDTO);
             $formInterface->handleRequest($request);
             if ($formInterface->isSubmitted() && $formInterface->isValid()) {
                 $username = $userDTO->username;
                 $password = $this->passwordEncoder->hashPass($userDTO->password);
                 if ($username != null && $password != null) {
-                    $success = $this->authenticationService->login($username, $password);
+                    $success = $this->userService->login($username, $password);
                     if ($success) {
                         $request->getSession()->set("user", $username);
                         $this->addFlash('notice', 'Login Successful! Welcome, ' . $request->getSession()->get("user"));
-                        return $this->redirectToRoute("login");
+                        return $this->redirectToRoute("address_mod");
                     }
                 }
                 $this->addFlash('notice', 'Invalid Credentials!');
                 return $this->redirectToRoute("login");
             }
-            return $this->render('FoodOrder/loginform.html.twig', array("form" => $formInterface->createView()));
+            return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(),"loggedIn"=>false));
         }
 
-        else return new JsonResponse($request->getSession()->get("user"));
+        return $this->redirectToRoute("address_mod");
     }
 
     /**
@@ -76,7 +75,7 @@ class AuthenticationController extends Controller
     public function register(Request $request)
     {
         $user = new User();
-        $formInterface = $this->authenticationService->getRegForm($user);
+        $formInterface = $this->userService->getRegForm($user);
 
         $formInterface->handleRequest($request);
         if ($formInterface->isSubmitted() && $formInterface->isValid()) {
@@ -85,7 +84,7 @@ class AuthenticationController extends Controller
                 ->hashPass($user->getPlainPassword());
             $user->setPassword($password);
             $user->setAdmin(false);
-            if($this->authenticationService->register($user)){
+            if($this->userService->register($user)){
                 $this->addFlash('notice', 'Success, please log in!');
                 return $this->redirectToRoute('login');
             }else{
@@ -95,14 +94,14 @@ class AuthenticationController extends Controller
             return $this->redirectToRoute('register');
         }
 
-        return $this->render('FoodOrder/loginform.html.twig', array("form"=>$formInterface->createView()) );
+        return $this->render('baseform.html.twig', array("form"=>$formInterface->createView()) );
 
     }
 
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
-        $this->authenticationService=$this->get("app.authentication_service");
+        $this->userService=$this->get("app.user_service");
         $this->passwordEncoder = $this->get('app.password_encoder');
     }
 
