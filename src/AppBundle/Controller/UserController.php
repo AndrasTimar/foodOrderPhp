@@ -31,6 +31,7 @@ class UserController extends Controller
      */
     private $passwordEncoder;
 
+
     /**
      * @Route("/logout", name="logout")
      */
@@ -80,16 +81,24 @@ class UserController extends Controller
     }
 
     /**
+     * @Route("/register/add_admin/{adminreg}", name="add_admin", defaults={"adminreg":"true"})
      * @Route("/register", name="register")
      * @Route("/account", name="account")
+     * @param $adminreg boolean
      */
     public function register(Request $request, $adminreg = false)
     {
         $userId = $request->getSession()->get("userId");
+
         if($userId){
             $user = $this->userService->getUserById($userId);
         }
         else{
+            $user = new User();
+        }
+        if($adminreg && !$user->getAdmin()){
+            return $this->redirectToRoute('register');
+        }else if($adminreg){
             $user = new User();
         }
         $formInterface = $this->userService->getRegForm($user);
@@ -97,7 +106,8 @@ class UserController extends Controller
         $formInterface->handleRequest($request);
 
         if ($formInterface->isSubmitted() && $formInterface->isValid()) {
-            $user->setAdmin($adminreg);
+
+            $user->setAdmin($adminreg && true);
             if ($this->userService->register($user)) {
                 $this->addFlash('notice', 'Success!');
                 if(!$user->getAddress()){
