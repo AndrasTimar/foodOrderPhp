@@ -12,6 +12,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Food;
 use AppBundle\Entity\Order;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -58,6 +59,10 @@ class OrderService implements IOrderService
         $form->add("amount", NumberType::class);
         $form->add("food", EntityType::class, array(
             'class' => 'AppBundle:Food',
+            'query_builder' => function(EntityRepository $repository) {
+               return $repository->createQueryBuilder("f")
+                    ->where("f.available = 1");
+             },
             'choice_label' => function ($food) {
                 return $food->getName()."|".$food->getCost()." Ft";},
             'choice_value' => 'id'
