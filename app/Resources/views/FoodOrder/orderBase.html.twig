@@ -20,9 +20,6 @@
             {% if not admin %}
                 <p><a href="{{ path('address_mod') }}"> Change My Address</a></p>
                 <p><a href="{{ path('cart') }}"> View Cart</a></p>
-                {% else %}
-                    <p><a href="{{ path('orders') }}"> Manage Orders</a></p>
-
             {% endif %}
             <p><a href="{{ path('foods') }}"> See Foods</a></p>
             <p><a href="{{ path('account') }}"> Account settings</a></p>
