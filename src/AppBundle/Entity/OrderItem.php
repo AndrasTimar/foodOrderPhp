@@ -29,7 +29,7 @@ class OrderItem
     private $order;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Food", inversedBy="orderitem", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Food", inversedBy="orderitem")
      */
     private $food;
 

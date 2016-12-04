@@ -29,13 +29,13 @@
                     {% else %}
                         NO
                     {% endif %}</td>
-                    <td><a href="{{ path('foodshow', { 'foodId': food.getId() }) }}">Show</a></td>
-                    <td><a href="{{ path('cartaddfood', { 'foodId': food.getId() }) }}">Add to Cart</a></td>
-                    <td><a href="{{ path('foodedit', { 'foodId': food.getId() }) }}">Edit</a></td>
-                    <td><a href="{{ path('fooddel', { 'foodId': food.getId() }) }}">Delete</a></td>
+                    <td><a class="btn btn-default" href="{{ path('foodshow', { 'foodId': food.getId() }) }}">Show</a></td>
+                    <td><a class="btn btn-default" href="{{ path('cartaddfood', { 'foodId': food.getId() }) }}">Add to Cart</a></td>
+                    <td><a class="btn btn-default" href="{{ path('foodedit', { 'foodId': food.getId() }) }}">Edit</a></td>
+                    <td><a class="btn btn-danger" href="{{ path('fooddel', { 'foodId': food.getId() }) }}">&#10006;</a></td>
                     {% else %}
                         <td>{{ food.getDescription() }}</td>
-                        <td><a href="{{ path('cartaddfood', { 'foodId': food.getId() }) }}">Add to Cart</a></td>
+                        <td><a class="btn btn-default" href="{{ path('cartaddfood', { 'foodId': food.getId() }) }}">Add to Cart</a></td>
                 {% endif %}
             </tr>
             {% endif %}

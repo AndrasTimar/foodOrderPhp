@@ -44,7 +44,7 @@ class Food
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="food", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="food")
      */
     private $orderitem;
     /**

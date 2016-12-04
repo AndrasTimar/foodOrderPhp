@@ -42,10 +42,6 @@ class OrderController extends Controller
      * @var \Swift_Mailer
      */
     private $mailerService;
-    /**
-     * @var Order
-     */
-    private $order;
 
     public function setContainer(ContainerInterface $container = null)
     {
@@ -80,13 +76,33 @@ class OrderController extends Controller
         if($formInterface->isSubmitted() && $formInterface->isValid()){
             //pretty ugly...
             $orderItems = $request->getSession()->get("orderItems");
-            $orderItems[] = $orderItem;
+            $orderItems[uniqid()] = $orderItem;
             $request->getSession()->set("orderItems",$orderItems);
             $this->addFlash('notice', 'Success!');
             return $this->redirectToRoute("cart");
         }
 
         return $this->render('FoodOrder/baseform.html.twig', array("form"=>$formInterface->createView(),"loggedIn"=>true,"admin"=>$user->getAdmin()) );
+    }
+    /**
+     * @Route("/cart/remove/{arrid}", name="cartremoveone")
+     */
+    public function removeFood($arrid = 0, Request $request){
+        $userId = $request->getSession()->get("userId");
+        if(!$userId){
+            $this->addFlash('notice', 'Please log in!');
+            return $this->redirectToRoute("login");
+        }
+
+        $orderItems = $request->getSession()->get("orderItems");
+        if(isset($orderItems[$arrid])){
+            unset($orderItems[$arrid]);
+            $request->getSession()->set("orderItems",$orderItems);
+            $this->addFlash('notice', 'Success!');
+        }else{
+            $this->addFlash('notice', 'Lofasz!'.$arrid);
+        }
+        return $this->redirectToRoute("cart");
     }
 
     /**

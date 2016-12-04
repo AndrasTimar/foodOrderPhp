@@ -15,12 +15,13 @@
         </tr>
         </thead>
         <tbody>
-        {% for orderItem in itemList %}
+        {% for key, orderItem in itemList %}
                 {# @var orderItem \AppBundle\Entity\OrderItem #}
                 <tr>
                     <td>{{ orderItem.food.getName() }}</td>
                     <td>{{ orderItem.food.cost }}</td>
                     <td>{{ orderItem.amount }}</td>
+                    <td><a class="btn btn-danger" href="{{ path('cartremoveone', { 'arrid': key }) }}">&#10006;</a></td>
                 </tr>
         {% endfor %}
         <br />
