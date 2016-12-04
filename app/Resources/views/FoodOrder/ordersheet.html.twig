@@ -1,0 +1,21 @@
+{# @var order \AppBundle\Entity\Order #}
+
+{% extends 'FoodOrder/baseform.html.twig' %}
+
+{% block orderbody %}
+    <table class="table">
+        <tr><th>Order Date:</th><td>{{order.getOrderDate()|date("Y/m/d H:i:s")}}</td>
+        <tr><th>Delivery Date:</th><td>{% if order.getDeliverDate()%}
+                    {{ order.getDeliverDate()|date("Y/m/d H:i:s")}}
+                {% else %}
+                    Not yet delivered
+                {% endif %}
+            </td></tr>
+        {% set counter = 0 %}
+        {% for orderItem in order.getOrderItem() %}
+            <tr><th>Item:</th><td>{{orderItem.getAmount()}}  {{orderItem.getFood().getName()}}</td>
+            {% set counter = counter + orderItem.getFood().getCost() * orderItem.getAmount() %}
+        {% endfor %}
+        <tr><th>Total: </th><td>{{counter}} Forints</td>
+    </table>
+{% endblock %}

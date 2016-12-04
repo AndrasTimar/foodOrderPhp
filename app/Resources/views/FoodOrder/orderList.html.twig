@@ -1,0 +1,37 @@
+{# @var arr \AppBundle\Entity\Order[] #}
+{% extends 'FoodOrder/baseform.html.twig' %}
+
+{% block orderbody %}
+    <h1>History of my orders</h1>
+
+    <hr />
+    <table border="0" class="table">
+        <thead>
+        <tr>
+            <th>OrderDate</th>
+            <th>DeliverDate</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for order in orders %}
+            {# @var order \AppBundle\Entity\Order #}
+            <tr>
+                <td>{{order.getOrderDate()|date("Y/m/d H:i:s")}}</td>
+                <td>{% if order.getDeliverDate()%}
+                    {{ order.getDeliverDate()|date("Y/m/d H:i:s")}}
+                {% else %}
+                    Not yet delivered
+                {% endif %}
+                </td>
+                <td>
+                    <td><a href="{{ path('showorder', { 'orderId': order.getId() }) }}">Show</a></td>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if admin %}
+        <a href="{{ path('foodedit') }}" class="btn btn-default" role="button">ADD NEW FOOD</a>
+    {% endif %}
+{% endblock %}

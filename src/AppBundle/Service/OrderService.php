@@ -81,4 +81,9 @@ class OrderService implements IOrderService
         $this->entityManager->merge($order);
         $this->entityManager->flush();
     }
+
+    public function getOrderById($orderId)
+    {
+        return $this->orderRepository->find($orderId);
+    }
 }

@@ -35,6 +35,11 @@ class Order
     private $orderdate;
 
     /**
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    private $deliverdate;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="order", cascade={"all"})
      */
     private $orderItem;
@@ -71,6 +76,29 @@ class Order
     public function getOrderDate()
     {
         return $this->orderdate;
+    }
+    /**
+     * Set orderDate
+     *
+     * @param \DateTime $deliverDate
+     *
+     * @return Order
+     */
+    public function setDeliverDate($deliverDate)
+    {
+        $this->deliverdate = $deliverDate;
+
+        return $this;
+    }
+
+    /**
+     * Get orderDate
+     *
+     * @return \DateTime
+     */
+    public function getDeliverDate()
+    {
+        return $this->deliverdate;
     }
 
     /**

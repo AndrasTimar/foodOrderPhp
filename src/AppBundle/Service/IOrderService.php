@@ -28,4 +28,10 @@ interface IOrderService
      * @return
      */
     public function saveOrder($order);
+
+    /**
+     * @param $orderId integer
+     * @return Order
+     */
+    public function getOrderById($orderId);
 }

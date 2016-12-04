@@ -11,7 +11,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\DTO\UserDTO;
 use AppBundle\Entity\User;
-use AppBundle\Service\IPasswordEncoderService;
 use AppBundle\Service\IUserService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;

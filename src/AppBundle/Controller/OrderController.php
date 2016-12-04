@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Order;
 use AppBundle\Entity\OrderItem;
+use AppBundle\Entity\User;
 use AppBundle\Service\IFoodService;
 use AppBundle\Service\IOrderService;
 use AppBundle\Service\IUserService;
@@ -56,7 +57,7 @@ class OrderController extends Controller
     }
 
     /**
-     * @Route("/order/{foodId}", name="addfood")
+     * @Route("/order/{foodId}", name="cartaddfood")
      */
     public function addFood($foodId=0, Request $request){
         $userId = $request->getSession()->get("userId");
@@ -157,4 +158,37 @@ class OrderController extends Controller
         $this->addFlash('notice', 'Order Sent');
         return $this->redirectToRoute("foods");
     }
+
+    /**
+     * @Route("/orders", name="listorders")
+     */
+    public function getOrdersOfUser(Request $request){
+        $userId = $request->getSession()->get("userId");
+        if(!$userId){
+            $this->addFlash('notice', 'Please log in!');
+            return $this->redirectToRoute("login");
+        }
+
+        /** @var User $user */
+        $user = $this->userService->getUserById($userId);
+        $arr = $user->getOrder();
+        return $this->render(":FoodOrder:orderList.html.twig",["orders"=>$arr,"admin"=>$user->getAdmin(),"loggedIn"=>true]);
+    }
+
+    /**
+     * @Route("/order/show/{orderId}", name="showorder")
+     */
+    public function showOrder(Request $request, $orderId){
+        $userId = $request->getSession()->get("userId");
+        if(!$userId){
+            $this->addFlash('notice', 'Please log in!');
+            return $this->redirectToRoute("login");
+        }
+        $user = $this->userService->getUserById($userId);
+        /** @var User $user */
+        $order = $this->orderService->getOrderById($orderId);
+        return $this->render(":FoodOrder:orderSheet.html.twig",["order"=>$order,"admin"=>$user->getAdmin(),"loggedIn"=>true]);
+
+    }
+
 }
