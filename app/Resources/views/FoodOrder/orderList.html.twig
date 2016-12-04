@@ -2,7 +2,7 @@
 {% extends 'FoodOrder/baseform.html.twig' %}
 
 {% block orderbody %}
-    <h1>History of my orders</h1>
+    <h1>Orders</h1>
 
     <hr />
     <table border="0" class="table">
@@ -10,6 +10,7 @@
         <tr>
             <th>OrderDate</th>
             <th>DeliverDate</th>
+            <th>Ordered by</th>
         </tr>
         </thead>
         <tbody>
@@ -24,14 +25,21 @@
                     Not yet delivered
                 {% endif %}
                 </td>
+                <td>{{order.getUser().getUserName()}}</td>
                 <td>
-                    <td><a href="{{ path('showorder', { 'orderId': order.getId() }) }}">Show</a></td>
+                    <td><a class="btn btn-default" href="{{ path('showorder', { 'orderId': order.getId() }) }}">Show</a></td>
                 </td>
+                {% if admin %}
+                    {% if not order.getDeliverDate() %}
+                    <td><a class="btn btn-default" href="{{ path('deliverorder', { 'orderId': order.getId() }) }}">Set to Delivered</a></td>
+                        {% else %}
+                            <td></td>
+                    {% endif %}
+                        <td><a class="btn btn-default btn-danger" href="{{ path('deleteorder', { 'orderId': order.getId() }) }}">DELETE</a></td>
+                {% endif %}
+
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    {% if admin %}
-        <a href="{{ path('foodedit') }}" class="btn btn-default" role="button">ADD NEW FOOD</a>
-    {% endif %}
 {% endblock %}

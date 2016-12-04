@@ -8,8 +8,6 @@
 
 namespace AppBundle\Service;
 
-
-use AppBundle\Entity\Food;
 use AppBundle\Entity\Order;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -77,7 +75,6 @@ class OrderService implements IOrderService
      */
     public function saveOrder($order)
     {
-        $order->setOrderDate(new \DateTime(date("Y-m-d H:i:s")));
         $this->entityManager->merge($order);
         $this->entityManager->flush();
     }
@@ -85,5 +82,22 @@ class OrderService implements IOrderService
     public function getOrderById($orderId)
     {
         return $this->orderRepository->find($orderId);
+    }
+
+    /**
+     * @return Order[]
+     */
+    public function getAllOrders()
+    {
+        return $this->orderRepository->findBy(array(), array('orderdate' => 'DESC'));
+    }
+
+    /**
+     * @param $order Order
+     */
+    public function deleteOrder($order)
+    {
+        $this->entityManager->remove($order);
+        $this->entityManager->flush();
     }
 }

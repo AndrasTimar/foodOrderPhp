@@ -34,4 +34,14 @@ interface IOrderService
      * @return Order
      */
     public function getOrderById($orderId);
+
+    /**
+     * @return Order[]
+     */
+    public function getAllOrders();
+
+    /**
+     * @param $order Order
+     */
+    public function deleteOrder($order);
 }

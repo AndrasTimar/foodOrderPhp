@@ -24,8 +24,6 @@ class UserController extends Controller
      * @var IUserService
      */
     private $userService;
-
-
     /**
      * @Route("/logout", name="logout")
      */

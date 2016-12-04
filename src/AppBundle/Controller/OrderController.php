@@ -57,7 +57,7 @@ class OrderController extends Controller
     }
 
     /**
-     * @Route("/order/{foodId}", name="cartaddfood")
+     * @Route("/cart/add/{foodId}", name="cartaddfood")
      */
     public function addFood($foodId=0, Request $request){
         $userId = $request->getSession()->get("userId");
@@ -144,6 +144,7 @@ class OrderController extends Controller
         foreach($orderItems as $orderItem){
             $order->getOrderItem()->add($orderItem);
         }
+        $order->setOrderDate(new \DateTime(date("Y-m-d H:i:s")));
         $this->orderService->saveOrder($order);
 
         //define credentials in config.yml
@@ -184,11 +185,81 @@ class OrderController extends Controller
             $this->addFlash('notice', 'Please log in!');
             return $this->redirectToRoute("login");
         }
-        $user = $this->userService->getUserById($userId);
         /** @var User $user */
+        $user = $this->userService->getUserById($userId);
         $order = $this->orderService->getOrderById($orderId);
         return $this->render(":FoodOrder:orderSheet.html.twig",["order"=>$order,"admin"=>$user->getAdmin(),"loggedIn"=>true]);
 
     }
 
+    /**
+     * @Route("/order/manage", name="manageorders")
+     */
+    public function manageOrders(Request $request){
+        $userId = $request->getSession()->get("userId");
+        if(!$userId){
+            $this->addFlash('notice', 'Please log in!');
+            return $this->redirectToRoute("login");
+        }
+        /** @var User $user */
+        $user = $this->userService->getUserById($userId);
+        if(!$user->getAdmin()){
+            return $this->redirectToRoute("showorder");
+        }
+
+        $arr = $this->orderService->getAllOrders();
+        return $this->render(":FoodOrder:orderList.html.twig",["orders"=>$arr,"admin"=>$user->getAdmin(),"loggedIn"=>true]);
+    }
+
+    /**
+     * @Route("/order/deliver/{orderId}", name="deliverorder")
+     */
+    public function deliverOrder(Request $request, $orderId){
+        $userId = $request->getSession()->get("userId");
+        if(!$userId){
+            $this->addFlash('notice', 'Please log in!');
+            return $this->redirectToRoute("login");
+        }
+        /** @var User $user */
+        $user = $this->userService->getUserById($userId);
+        if(!$user->getAdmin()){
+            return $this->redirectToRoute("showorder");
+        }
+
+        $order = $this->orderService->getOrderById($orderId);
+        $order->setDeliverDate(new \DateTime(date("Y-m-d H:i:s")));
+        $this->orderService->saveOrder($order);
+
+        $message = Swift_Message::newInstance('Order Delivered')
+            ->setFrom(array('foodorder.oe@gmail.com' => 'Food Order'))
+            ->setTo(array($order->getUser()->getEmail()))
+            ->setBody('Your order was delivered at '.$order->getDeliverDate()->format("d/m/Y H:i:s").". Enjoy.");
+
+        $this->mailerService->send($message);
+
+        return $this->redirectToRoute("manageorders");
+
+    }
+
+    /**
+     * @Route("/order/delete/{orderId}", name="deleteorder")
+     */
+    public function deleteOrder(Request $request, $orderId){
+        $userId = $request->getSession()->get("userId");
+        if(!$userId){
+            $this->addFlash('notice', 'Please log in!');
+            return $this->redirectToRoute("login");
+        }
+        /** @var User $user */
+        $user = $this->userService->getUserById($userId);
+        if(!$user->getAdmin()){
+            return $this->redirectToRoute("showorder");
+        }
+
+        $order = $this->orderService->getOrderById($orderId);
+        $this->orderService->deleteOrder($order);
+
+        return $this->redirectToRoute("manageorders");
+
+    }
 }
