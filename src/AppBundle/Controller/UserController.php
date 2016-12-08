@@ -100,7 +100,7 @@ class UserController extends Controller
         if ($formInterface->isSubmitted() && $formInterface->isValid()) {
 
             $user->setAdmin($adminreg && true);
-            if ($this->userService->register($user)) {
+            if ($this->userService->register($user,$userId)) {
                 $this->addFlash('notice', 'Success!');
                 if(!$user->getAddress()){
                     return $this->redirectToRoute('login');

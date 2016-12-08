@@ -81,12 +81,17 @@ class UserService implements IUserService
      * @param $user User
      * @return boolean
      */
-    function register($user)
+    function register($user, $userId)
     {
         $user->setPassword($this->passwordEncoder->hashPass($user->getPlainPassword()));
-        $found = $this->userRepo->findBy(["username"=>$user->getUsername()]);
-        if(!$found) {
-            $this->entityManager->persist($user);
+
+        $found = false;
+
+        if(!$userId) {
+            $found = $this->userRepo->findBy(["username" => $user->getUsername()]);
+        }
+        if($userId || !$found) {
+            $this->entityManager->merge($user);
             $this->entityManager->flush();
             return true;
         }

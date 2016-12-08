@@ -37,7 +37,7 @@ interface IUserService
      * @param $user User
      * @return boolean
      */
-    function register($user);
+    function register($user, $userId);
 
     /**
      * @param $username String
