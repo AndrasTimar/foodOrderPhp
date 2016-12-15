@@ -13,6 +13,7 @@ use AppBundle\Entity\Food;
 use AppBundle\Service\IFoodService;
 use AppBundle\Service\IUserService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -102,9 +103,15 @@ class FoodController extends Controller
             $this->addFlash('notice', 'Log in as admin for this action!');
             return $this->redirectToRoute("login");
         }
-        $this->foodService->deleteFood($foodId);
-        $this->addFlash('notice', 'Food Deleted!');
-        return $this->redirectToRoute("foodlist");
+        try {
+            $this->foodService->deleteFood($foodId);
+            $this->addFlash('notice', 'Food Deleted!');
+            return $this->redirectToRoute("foodlist");
+        }catch (\Exception $exception){
+            $this->addFlash('notice', $exception->getMessage());
+            return $this->redirectToRoute("foodlist");
+        }
+
     }
 
     /**

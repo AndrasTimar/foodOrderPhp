@@ -22,7 +22,7 @@
             {% endif %}
             <li><a href="{{ path('foods') }}">Menu</a></li>
             <li><a href="{{ path('cart') }}">Cart</a></li>
-            <li><a href="{{ path('listorders') }}">See my orders</a></li>
+            <li><a href="{{ path('listorders') }}">My orders</a></li>
             <li><a href="{{ path('address_list') }}">My Addresses</a></li>
             <li><a href="{{ path('account') }}">Account</a></li>
             <li><a href="{{ path('logout') }}">Logout</a></li>
@@ -35,8 +35,7 @@
             {{ flash_message }}
         </div>
     {% endfor %}
-
-    {% block orderbody %}{% endblock %}
-
-    <hr />
+    <div class="col-md-10">
+        {% block orderbody %}{% endblock %}
+    </div>
 {% endblock %}
