@@ -12,6 +12,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Order;
 use AppBundle\Entity\OrderItem;
 use AppBundle\Entity\User;
+use AppBundle\Service\IAddressService;
 use AppBundle\Service\IFoodService;
 use AppBundle\Service\IOrderService;
 use AppBundle\Service\IUserService;
@@ -43,6 +44,11 @@ class OrderController extends Controller
      */
     private $mailerService;
 
+    /**
+     * @var IAddressService
+     */
+    private $addressService;
+
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
@@ -50,6 +56,7 @@ class OrderController extends Controller
         $this->userService=$this->get("app.user_service");
         $this->foodService=$this->get("app.food_service");
         $this->mailerService=$this->get("mailer");
+        $this->addressService=$this->get("app.address_service");
     }
 
     /**
@@ -110,11 +117,10 @@ class OrderController extends Controller
      */
     public function viewCart(Request $request){
         $userId = $request->getSession()->get("userId");
-        if(!$userId){
+        if(!$userId) {
             $this->addFlash('notice', 'Please log in!');
             return $this->redirectToRoute("login");
         }
-
         $user = $this->userService->getUserById($userId);
         $arr = $request->getSession()->get("orderItems");
         $totalcost = 0;
@@ -152,11 +158,17 @@ class OrderController extends Controller
             $this->addFlash('notice', 'Cart is empty!');
             return $this->redirectToRoute("cart");
         }
+        $address = $request->getSession()->get("address");
+        if(!$address){
+            $this->addFlash('notice', 'Please choose an address!');
+            return $this->redirectToRoute("address_list");
+        }
 
         /** @var Order $order */
         $order = new Order();
         $user = $this->userService->getUserById($userId);
         $order->setUser($user);
+        $order->setAddress($this->addressService->getAddressById($address));
         foreach($orderItems as $orderItem){
             $order->getOrderItem()->add($orderItem);
         }

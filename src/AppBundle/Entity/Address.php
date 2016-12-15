@@ -23,6 +23,10 @@ class Address
     private $zip;
 
     /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $name;
+    /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $city;
@@ -41,6 +45,11 @@ class Address
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $door;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="addresses")
+     */
+    private $user;
 
     /**
      * Get id
@@ -170,5 +179,58 @@ class Address
     public function getDoor()
     {
         return $this->door;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Address
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Address
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    function __toString()
+    {
+        return $this->zip.", ".$this->city.", ".$this->street." ".$this->house_num."/".$this->getDoor();
     }
 }

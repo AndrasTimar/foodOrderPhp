@@ -46,12 +46,6 @@ interface IUserService
     public function getUserByName($username);
 
     /**
-     * @param $address Address
-     * @param $user User
-     */
-    public function updateAddress($address, $user);
-
-    /**
      * @param $userId integer
      * @return User
      */

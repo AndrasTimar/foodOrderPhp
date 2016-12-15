@@ -56,6 +56,7 @@ class AddressService implements IAddressService
     {
         $form = $this->formFactory->createBuilder(FormType::class, $address);
 
+        $form->add("name", TextType::class);
         $form->add("zip", NumberType::class);
         $form->add("city", TextType::class);
         $form->add("street", TextType::class);
@@ -79,5 +80,11 @@ class AddressService implements IAddressService
     public function getAddressById($addressId)
     {
         return $this->addressRepository->find($addressId);
+    }
+
+    public function deleteAddress($address)
+    {
+        $this->entityManager->remove($address);
+        $this->entityManager->flush();
     }
 }

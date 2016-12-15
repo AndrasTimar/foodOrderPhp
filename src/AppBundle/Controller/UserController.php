@@ -35,6 +35,7 @@ class UserController extends Controller
 
     /**
      * @Route("/login", name="login")
+     * @Route("/", name="base")
      */
     public function login(Request $request)
     {
@@ -52,7 +53,7 @@ class UserController extends Controller
                     $request->getSession()->set("userId", $user->getId());
                     $request->getSession()->set("orderItems", array());
                     $this->addFlash('notice', 'Login Successful! Welcome, ' . $user->getUsername());
-                    if(!$user->getAddress() && !$user->getAdmin()) {
+                    if(!$user->getAddresses() && !$user->getAdmin()) {
                         return $this->redirectToRoute("address_mod");
                     }
                     return $this->redirectToRoute("foods");
@@ -66,7 +67,7 @@ class UserController extends Controller
             return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => false, "admin" => false));
         }
         $user = $this->userService->getUserById($userId);
-        if($user->getAddress()){
+        if($user->getAddresses()){
             return $this->redirectToRoute("foods");
         }
         return $this->redirectToRoute("address_mod");
@@ -77,6 +78,7 @@ class UserController extends Controller
      * @Route("/register", name="register")
      * @Route("/account", name="account")
      * @param $adminreg boolean
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function register(Request $request, $adminreg = false)
     {
@@ -102,7 +104,7 @@ class UserController extends Controller
             $user->setAdmin($adminreg && true);
             if ($this->userService->register($user,$userId)) {
                 $this->addFlash('notice', 'Success!');
-                if(!$user->getAddress()){
+                if(!$user->getAddresses()){
                     return $this->redirectToRoute('login');
                 }
                 return $this->redirectToRoute('foods');

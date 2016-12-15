@@ -23,4 +23,6 @@ interface IAddressService
     public function saveAddress($address);
 
     public function getAddressById($addressId);
+
+    public function deleteAddress($address);
 }

@@ -41,9 +41,9 @@ class User
     private $email;
 
     /**
-     * @ORM\OneToOne(targetEntity="Address")
+     * @ORM\OneToMany(targetEntity="Address", mappedBy="user")
      */
-    private $address;
+    private $addresses;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -272,5 +272,39 @@ class User
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * Add address
+     *
+     * @param \AppBundle\Entity\Address $address
+     *
+     * @return User
+     */
+    public function addAddress(\AppBundle\Entity\Address $address)
+    {
+        $this->addresses[] = $address;
+
+        return $this;
+    }
+
+    /**
+     * Remove address
+     *
+     * @param \AppBundle\Entity\Address $address
+     */
+    public function removeAddress(\AppBundle\Entity\Address $address)
+    {
+        $this->addresses->removeElement($address);
+    }
+
+    /**
+     * Get addresses
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAddresses()
+    {
+        return $this->addresses;
     }
 }

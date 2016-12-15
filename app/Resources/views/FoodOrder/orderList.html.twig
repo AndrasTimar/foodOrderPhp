@@ -11,6 +11,7 @@
             <th>OrderDate</th>
             <th>DeliverDate</th>
             <th>Ordered by</th>
+            <th>Address name</th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +27,9 @@
                 {% endif %}
                 </td>
                 <td>{{order.getUser().getUserName()}}</td>
+                <td>
+                    {{ order.getAddress().getName() }}
+                </td>
                 <td>
                     <td><a class="btn btn-default" href="{{ path('showorder', { 'orderId': order.getId() }) }}">Show</a></td>
                 </td>

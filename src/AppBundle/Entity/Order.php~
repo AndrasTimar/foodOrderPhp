@@ -168,28 +168,4 @@ class Order
     {
         return $this->orderItem;
     }
-
-    /**
-     * Set address
-     *
-     * @param \AppBundle\Entity\Address $address
-     *
-     * @return Order
-     */
-    public function setAddress(\AppBundle\Entity\Address $address = null)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return \AppBundle\Entity\Address
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
 }

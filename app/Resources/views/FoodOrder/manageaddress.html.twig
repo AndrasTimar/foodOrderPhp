@@ -1,0 +1,33 @@
+
+{% extends 'FoodOrder/baseform.html.twig' %}
+
+{% block orderbody %}
+    <h1>My Addresses</h1>
+
+    <hr />
+    <table border="0" class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for address in addresslist %}
+                {# @var address \AppBundle\Entity\Address #}
+                {% if address == selected %}
+                    <tr class="bg-success">
+                {% else %}
+                    <tr>
+                {% endif %}
+                <td>{{ address.getName() }}</td>
+                <td>{{ address }}</td>
+                <td><a class="btn btn-default" href="{{ path('address_select', { 'addressId': address.getId() }) }}">Choose</a></td>
+                <td><a class="btn btn-default" href="{{ path('address_mod', { 'addressId': address.getId() }) }}">Edit</a></td>
+                <td><a class="btn btn-danger" href="{{ path('address_del', { 'addressId': address.getId() }) }}">&#10006;</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        <a href="{{ path('address_mod') }}" class="btn btn-default" role="button">ADD NEW ADDRESS</a>
+{% endblock %}

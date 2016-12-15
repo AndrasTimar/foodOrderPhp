@@ -1,6 +1,8 @@
-{% extends 'FoodOrder/orderBase.html.twig ' %}
+{% extends 'FoodOrder/orderBase.html.twig' %}
 {% block orderbody %}
+        <div class="col-md-10" style="width: 40%">
         {{ form_start(form) }}
         {{ form_widget(form) }}
         {{ form_end(form) }}
+        </div>
 {% endblock %}
