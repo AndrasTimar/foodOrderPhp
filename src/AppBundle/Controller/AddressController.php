@@ -105,7 +105,7 @@ class AddressController extends Controller
         if ($formInterface->isSubmitted() && $formInterface->isValid())
         {
             $this->addressService->saveAddress($address);
-            $this->addFlash('notice', 'Address SAVED!');
+            $this->addFlash('notice', 'Address saved!');
             return $this->redirectToRoute("address_list");
         }
 
@@ -128,7 +128,7 @@ class AddressController extends Controller
         /** @var Address $address */
         $address = $this->addressService->getAddressById($addressId);
         if($user === $address->getUser()) {
-            $this->addFlash('notice', $address->getUser()->getRealName());
+            $this->addFlash('notice', "Address deleted!");
             $this->addressService->deleteAddress($address);
         }
         return $this->redirectToRoute("address_list");

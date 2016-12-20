@@ -40,10 +40,12 @@ class UserService implements IUserService
      * @var PasswordEncoderService
      */
     private $passwordEncoder;
+
     /**
      * AuthenticationService constructor.
      * @param $entityManager EntityManager
      * @param $formFactory FormFactory
+     * @param PasswordEncoderService $passwordEncoderService
      */
     public function __construct(EntityManager $entityManager,FormFactory $formFactory, PasswordEncoderService $passwordEncoderService)
     {
@@ -130,4 +132,12 @@ class UserService implements IUserService
         return $this->userRepo->find($userId);
     }
 
+    /**
+     * @param $user User
+     */
+    public function deleteUser($user)
+    {
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+    }
 }

@@ -50,4 +50,10 @@ interface IUserService
      * @return User
      */
     public function getUserById($userId);
+
+    /**
+     * @param $user User
+     */
+    public function deleteUser($user);
+
 }

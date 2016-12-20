@@ -41,7 +41,7 @@ class User
     private $email;
 
     /**
-     * @ORM\OneToMany(targetEntity="Address", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Address", mappedBy="user",cascade={"all"})
      */
     private $addresses;
 
@@ -56,7 +56,7 @@ class User
     private $admin;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Order", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Order", mappedBy="user",cascade={"all"})
      */
     private $order;
 

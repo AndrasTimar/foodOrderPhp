@@ -1,0 +1,5 @@
+{% include 'FoodOrder/baseform.html.twig' %}
+<div class="col-md-10">
+    <a class="btn btn-default" href="{{ path('address_list') }}">My Addresses</a>
+    <a class="btn btn-danger" href="{{ path('account_del') }}" onclick="return confirm('Are you sure you want to delete your account?')" >Delete account</a>
+</div>

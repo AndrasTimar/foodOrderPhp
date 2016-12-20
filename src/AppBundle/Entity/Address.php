@@ -231,6 +231,6 @@ class Address
 
     function __toString()
     {
-        return $this->zip.", ".$this->city.", ".$this->street." ".$this->house_num."/".$this->getDoor();
+        return $this->zip.", ".$this->city.", ".$this->street." ".$this->house_num." / ".$this->getDoor();
     }
 }

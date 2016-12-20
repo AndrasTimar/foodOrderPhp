@@ -12,6 +12,7 @@ namespace AppBundle\Controller;
 use AppBundle\DTO\UserDTO;
 use AppBundle\Entity\User;
 use AppBundle\Service\IUserService;
+use AppBundle\util\RequestUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,6 +34,22 @@ class UserController extends Controller
         return $this->redirectToRoute("login");
     }
 
+    /**
+     * @Route("/account/delete", name="account_del")
+     */
+    public function accountDel(Request $request){
+        try {
+            $userId = $request->getSession()->get("userId");
+            $user = $this->userService->getUserById($userId);
+            $this->userService->deleteUser($user);
+        }
+        catch(\Exception $ex){
+            $this->addFlash('notice', $ex->getMessage());
+        }
+        $this->addFlash('notice', 'Account Deleted!');
+        return $this->redirectToRoute("logout");
+
+    }
     /**
      * @Route("/login", name="login")
      * @Route("/", name="base")
@@ -114,7 +131,10 @@ class UserController extends Controller
 
             return $this->redirectToRoute('register');
         }
-        return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $user->getAdmin()));
+        if(!$userId) {
+            return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $user->getAdmin()));
+        }
+        return $this->render('FoodOrder/accountsettings.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $user->getAdmin()));
 
     }
 
