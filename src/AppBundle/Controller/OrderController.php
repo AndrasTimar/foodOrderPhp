@@ -216,7 +216,7 @@ class OrderController extends Controller
         /** @var User $user */
         $user = $this->userService->getUserById($userId);
         $order = $this->orderService->getOrderById($orderId);
-        return $this->render(":FoodOrder:orderSheet.html.twig",["order"=>$order,"admin"=>$user->getAdmin(),"loggedIn"=>true]);
+        return $this->render(":FoodOrder:ordersheet.html.twig",["order"=>$order,"admin"=>$user->getAdmin(),"loggedIn"=>true]);
 
     }
 
