@@ -11,3 +11,7 @@ if(isset($_ENV['MAIL_USER']) && isset($_ENV['MAIL_PASS'])){
     $container->setParameter('mailUser',$_ENV['MAIL_USER']);
     $container->setParameter('mailPass', $_ENV['MAIL_PASS']);
 }
+else{
+    $container->setParameter('mailUser',null);
+    $container->setParameter('mailPass', null);
+}
