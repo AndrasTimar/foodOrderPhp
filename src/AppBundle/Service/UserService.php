@@ -140,4 +140,26 @@ class UserService implements IUserService
         $this->entityManager->remove($user);
         $this->entityManager->flush();
     }
+
+    /**
+     * @return User[]
+     */
+    public function getAllUsers()
+    {
+       return $this->userRepo->findAll();
+    }
+
+    /**
+     * @param $user User
+     * @return FormInterface
+     */
+    public function getAdminEditForm($user)
+    {
+        $form = $this->formFactory->createBuilder(FormType::class, $user);
+        $form->add("username", TextType::class);
+        $form->add("email", EmailType::class);
+        $form->add("realName", TextType::class);
+        $form->add("register", SubmitType::class, array('label'=>'Save'));
+        return $form->getForm();
+    }
 }

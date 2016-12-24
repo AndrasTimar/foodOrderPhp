@@ -35,6 +35,12 @@ interface IUserService
 
     /**
      * @param $user User
+     * @return FormInterface
+     */
+    public function getAdminEditForm($user);
+
+    /**
+     * @param $user User
      * @return boolean
      */
     function register($user, $userId);
@@ -55,5 +61,10 @@ interface IUserService
      * @param $user User
      */
     public function deleteUser($user);
+
+    /**
+     * @return User[]
+     */
+    public function getAllUsers();
 
 }
