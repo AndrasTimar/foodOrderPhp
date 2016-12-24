@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="acd6cdf3-8d23-433a-888e-f1134aa05a0d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/UserController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/UserController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Service/PasswordEncoderService.php" afterPath="$PROJECT_DIR$/src/AppBundle/Service/PasswordEncoderService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Service/UserService.php" afterPath="$PROJECT_DIR$/src/AppBundle/Service/UserService.php" />
     </list>
     <ignored path="FoodOrder.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -24,11 +24,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="UserController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UserController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/UserController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="373">
-              <caret line="168" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
+              <caret line="114" column="49" selection-start-line="114" selection-start-column="49" selection-end-line="114" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -67,38 +67,48 @@
       <file leaf-file-name="IUserService.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/IUserService.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="424">
-              <caret line="41" column="7" selection-start-line="41" selection-start-column="7" selection-end-line="41" selection-end-column="7" />
+            <state relative-caret-position="288">
+              <caret line="33" column="20" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FoodController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/FoodController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="735">
-              <caret line="116" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="121" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserService.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UserService.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/UserService.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="662">
-              <caret line="158" column="48" selection-start-line="158" selection-start-column="48" selection-end-line="158" selection-end-column="48" />
+            <state relative-caret-position="492">
+              <caret line="119" column="30" selection-start-line="119" selection-start-column="30" selection-end-line="119" selection-end-column="30" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="userlist.html.twig" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Resources/views/FoodOrder/userlist.html.twig">
+      <file leaf-file-name="PasswordEncoderService.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/PasswordEncoderService.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="50" selection-start-line="21" selection-start-column="50" selection-end-line="21" selection-end-column="50" />
+            <state relative-caret-position="221">
+              <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="security.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/config/security.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OrderController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/OrderController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="858">
+              <caret line="215" column="30" selection-start-line="215" selection-start-column="30" selection-end-line="215" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -107,18 +117,8 @@
       <file leaf-file-name="User.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/User.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="561">
+            <state relative-caret-position="408">
               <caret line="43" column="77" selection-start-line="43" selection-start-column="77" selection-end-line="43" selection-end-column="77" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ordersheet.html.twig" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Resources/views/FoodOrder/ordersheet.html.twig">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" column="14" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -148,7 +148,6 @@
         <option value="$PROJECT_DIR$/app/Resources/views/FoodOrder/loginform.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Service/FoodService.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Service/PasswordEncoderService.php" />
         <option value="$PROJECT_DIR$/app/config/services.yml" />
         <option value="$PROJECT_DIR$/app/Resources/views/base.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/FoodOrder/foodsheet.html.twig" />
@@ -188,9 +187,10 @@
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/FoodController.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/FoodOrder/userlist.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Service/IUserService.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Service/UserService.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/FoodOrder/orderBase.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/UserController.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Service/PasswordEncoderService.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Service/UserService.php" />
       </list>
     </option>
   </component>
@@ -422,7 +422,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
-    <property name="SearchEverywhereHistoryKey" value="config_de&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/config_dev.yml&#10;parameter&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/parameters.php&#10;config.ph&#9;FILE&#9;file://F:/workspace/php/FoodOrder/web/config.php&#10;paramete&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/parameters.yml.dist&#10;config&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/config.yml&#10;param&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/parameters.yml&#10;p&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/parameters.yml&#10;users&#9;FILE&#9;file://F:/workspace/php/FoodOrder/src/AppBundle/Service/UserService.php&#10;php&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/parameters.php&#10;para&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/parameters.php&#10;parameters.php&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Config/EnvParametersResource.php&#10;config_&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/app/config/config_prod.yml&#10;paramet&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/app/config/parameters.yml.dist&#10;parame&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/app/config/parameters.yml.dist&#10;conf&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/app/config/config_prod.yml&#10;config.&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/app/config/config_prod.yml&#10;config_pro&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/app/config/config_prod.yml&#10;foreignke&#9;null&#9;null&#10;form_tab&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form/form_table_layout.html.twig&#10;gitig&#9;FILE&#9;file://F:/workspace/php/FoodOrder/.gitignore&#10;assets&#9;FILE&#9;file://F:/workspace/php/FoodOrder/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Tests/DependencyInjection/Fixtures/php/assets.php&#10;services&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/services.yml" />
+    <property name="SearchEverywhereHistoryKey" value="security.yml&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/security.yml&#10;config_de&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/config_dev.yml&#10;parameter&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/parameters.php&#10;config.ph&#9;FILE&#9;file://F:/workspace/php/FoodOrder/web/config.php&#10;paramete&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/parameters.yml.dist&#10;config&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/config.yml&#10;param&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/parameters.yml&#10;p&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/parameters.yml&#10;users&#9;FILE&#9;file://F:/workspace/php/FoodOrder/src/AppBundle/Service/UserService.php&#10;php&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/parameters.php&#10;para&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/parameters.php&#10;parameters.php&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Config/EnvParametersResource.php&#10;config_&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/app/config/config_prod.yml&#10;paramet&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/app/config/parameters.yml.dist&#10;parame&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/app/config/parameters.yml.dist&#10;conf&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/app/config/config_prod.yml&#10;config.&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/app/config/config_prod.yml&#10;config_pro&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/app/config/config_prod.yml&#10;foreignke&#9;null&#9;null&#10;form_tab&#9;FILE&#9;file:///Volumes/MAC/Volumes/BANDATA/macstore/workspace/php/foodOrderPhp/vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form/form_table_layout.html.twig&#10;gitig&#9;FILE&#9;file://F:/workspace/php/FoodOrder/.gitignore&#10;assets&#9;FILE&#9;file://F:/workspace/php/FoodOrder/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Tests/DependencyInjection/Fixtures/php/assets.php&#10;services&#9;FILE&#9;file://F:/workspace/php/FoodOrder/app/config/services.yml" />
     <property name="settings.editor.selected.configurable" value="preferences.intentionPowerPack" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/AppBundle/Service" />
@@ -513,12 +513,12 @@
       <workItem from="1482315403079" duration="587000" />
       <workItem from="1482316023757" duration="319000" />
       <workItem from="1482325303406" duration="1549000" />
-      <workItem from="1482580751555" duration="2406000" />
+      <workItem from="1482580751555" duration="3809000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="103028000" />
+    <option name="totallyTimeSpent" value="104431000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -564,20 +564,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/AddressService.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/basic.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="919">
-          <caret line="125" column="9" selection-start-line="125" selection-start-column="9" selection-end-line="125" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/twig/twig/lib/Twig/Parser.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -842,26 +828,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/OrderController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3383">
-          <caret line="215" column="30" selection-start-line="215" selection-start-column="30" selection-end-line="215" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Resources/views/FoodOrder/foodlist.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="363">
           <caret line="23" column="40" selection-start-line="0" selection-start-column="0" selection-end-line="47" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="43" column="77" selection-start-line="43" selection-start-column="77" selection-end-line="43" selection-end-column="77" />
           <folding />
         </state>
       </provider>
@@ -890,22 +860,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/IUserService.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="41" column="7" selection-start-line="41" selection-start-column="7" selection-end-line="41" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/UserService.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="662">
-          <caret line="158" column="48" selection-start-line="158" selection-start-column="48" selection-end-line="158" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Resources/views/FoodOrder/baseform.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -930,10 +884,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/config/security.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="43" column="77" selection-start-line="43" selection-start-column="77" selection-end-line="43" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/PasswordEncoderService.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/OrderController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="858">
+          <caret line="215" column="30" selection-start-line="215" selection-start-column="30" selection-end-line="215" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/UserController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="373">
-          <caret line="168" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
+          <caret line="114" column="49" selection-start-line="114" selection-start-column="49" selection-end-line="114" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/IUserService.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="33" column="20" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/UserService.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="119" column="30" selection-start-line="119" selection-start-column="30" selection-end-line="119" selection-end-column="30" />
           <folding />
         </state>
       </provider>
