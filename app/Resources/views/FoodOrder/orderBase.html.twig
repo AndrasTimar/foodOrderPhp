@@ -15,17 +15,17 @@
             <li><a href="{{ path('login') }}"> Log in</a></li>
             <li><a href="{{ path('register') }}"> Register </a></li>
         {% else %}
-            {% if admin %}
-                <li><a href="{{ path('add_admin') }}"> Add Administrator</a></li>
-                <li><a href="{{ path('users') }}"> Manage Users </a></li>
-                <li><a href="{{ path('manageorders') }}"> Manage Orders </a></li>
-            {% endif %}
             <li><a href="{{ path('foods') }}">Menu</a></li>
             <li><a href="{{ path('cart') }}">Cart</a></li>
             <li><a href="{{ path('listorders') }}">My orders</a></li>
             <li><a href="{{ path('address_list') }}">My Addresses</a></li>
             <li><a href="{{ path('account') }}">Account</a></li>
             <li><a href="{{ path('logout') }}">Logout</a></li>
+            {% if admin %}
+                <li><a href="{{ path('add_admin') }}"> Add Administrator</a></li>
+                <li><a href="{{ path('users') }}"> Manage Users </a></li>
+                <li><a href="{{ path('manageorders') }}"> Manage Orders </a></li>
+            {% endif %}
         {% endif %}
             </ul>
         </div>
