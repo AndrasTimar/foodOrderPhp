@@ -56,7 +56,7 @@ class AddressService implements IAddressService
     {
         $form = $this->formFactory->createBuilder(FormType::class, $address);
 
-        $form->add("name", TextType::class);
+        $form->add("name", TextType::class, array('label'=>'Address name'));
         $form->add("zip", NumberType::class);
         $form->add("city", TextType::class);
         $form->add("street", TextType::class);

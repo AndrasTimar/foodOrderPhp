@@ -109,7 +109,7 @@ class UserService implements IUserService
     {
         $form = $this->formFactory->createBuilder(FormType::class, $user);
         $form->add("username", TextType::class);
-        $form->add("plainPassword", PasswordType::class);
+        $form->add("plainPassword", PasswordType::class, array('label'=>'Password'));
         $form->add("email", EmailType::class);
         $form->add("realName", TextType::class);
         $form->add("register", SubmitType::class, array('label'=>'Save'));
