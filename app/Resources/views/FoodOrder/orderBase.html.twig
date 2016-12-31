@@ -10,7 +10,7 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="{{ path("foods") }}">Food Ordering</a>
             </div>
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav" >
         {% if not loggedIn %}
             <li><a href="{{ path('login') }}"> Log in</a></li>
             <li><a href="{{ path('register') }}"> Register </a></li>
@@ -18,7 +18,6 @@
             <li><a href="{{ path('foods') }}">Menu</a></li>
             <li><a href="{{ path('cart') }}">Cart</a></li>
             <li><a href="{{ path('listorders') }}">My orders</a></li>
-            <li><a href="{{ path('address_list') }}">My Addresses</a></li>
             <li><a href="{{ path('account') }}">Account</a></li>
             <li><a href="{{ path('logout') }}">Logout</a></li>
             {% if admin %}
