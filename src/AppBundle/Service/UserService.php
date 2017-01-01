@@ -7,6 +7,7 @@ use AppBundle\Entity\Address;
 use AppBundle\Entity\User;
 use AppBundle\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -35,12 +36,6 @@ class UserService implements IUserService
      * @var UserRepository
      */
     private $userRepo;
-
-    /**
-     * @var PasswordEncoderService
-     */
-    private $passwordEncoder;
-
     /**
      * AuthenticationService constructor.
      * @param $entityManager EntityManager
@@ -85,7 +80,6 @@ class UserService implements IUserService
      */
     function register($user, $userId)
     {
-        $user->setPassword($this->passwordEncoder->hashPass($user->getPlainPassword()));
 
         $found = false;
 
@@ -159,6 +153,9 @@ class UserService implements IUserService
         $form->add("username", TextType::class);
         $form->add("email", EmailType::class);
         $form->add("realName", TextType::class);
+        $form->add("admin", ChoiceType::class,
+            array("choices"=>array("YES"=>true, "NO"=>false))
+        );
         $form->add("register", SubmitType::class, array('label'=>'Save'));
         return $form->getForm();
     }

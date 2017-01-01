@@ -11,6 +11,7 @@
             <th>Real Name</th>
             <th>Username</th>
             <th>Email address</th>
+            <th>IsAdmin</th>
         </tr>
         </thead>
         <tbody>
@@ -20,9 +21,14 @@
                     <td>{{ user.getRealName() }}</td>
                     <td>{{ user.getUserName() }}</td>
                     <td>{{ user.getEmail() }}</td>
-                        <td><a class="btn btn-default" href="{{ path('useredit_admin', { 'userId': user.getId() }) }}">Edit</a></td>
-                        <td><a class="btn btn-danger" href="{{ path('userdel_admin', { 'userId': user.getId() }) }}">&#10006;</a></td>
-                   </tr>
+                    {% if user.admin() %}
+                        <td>Yes</td>
+                    {% else %}
+                        <td>No</td>
+                    {% endif %}
+                    <td><a class="btn btn-default" href="{{ path('useredit_admin', { 'userId': user.getId() }) }}">Edit</a></td>
+                    <td><a class="btn btn-danger" href="{{ path('userdel_admin', { 'userId': user.getId() }) }}">&#10006;</a></td>
+                </tr>
         {% endfor %}
         </tbody>
     </table>

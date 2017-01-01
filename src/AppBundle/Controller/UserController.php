@@ -21,6 +21,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends Controller
 {
 
+
+
+    /**
+     * @var PasswordEncoderService
+     */
+    private $passwordEncoder;
     /**
      * @var IUserService
      */
@@ -118,7 +124,8 @@ class UserController extends Controller
 
         if ($formInterface->isSubmitted() && $formInterface->isValid()) {
 
-            $user->setAdmin($adminreg ? 1 : 0);
+            $user->setAdmin(($adminreg||$user->getAdmin()) ? 1 : 0);
+            $user->setPassword($this->passwordEncoder->hashPass($user->getPlainPassword()));
             if ($this->userService->register($user,$userId)) {
                 $this->addFlash('notice', 'Success!');
                 if(!$user->getAddresses()){
@@ -132,7 +139,7 @@ class UserController extends Controller
             return $this->redirectToRoute('register');
         }
         if(!$userId) {
-            return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $this->userService->getUserById($userId)));
+            return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => false));
         }
         return $this->render('FoodOrder/accountsettings.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $this->userService->getUserById($userId)));
 
@@ -141,7 +148,7 @@ class UserController extends Controller
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
-
+        $this->passwordEncoder = $this->get('app.password_encoder');
         $this->userService = $this->get("app.user_service");
     }
 
