@@ -118,7 +118,7 @@ class UserController extends Controller
 
         if ($formInterface->isSubmitted() && $formInterface->isValid()) {
 
-            $user->setAdmin($adminreg);
+            $user->setAdmin($adminreg ? 1 : 0);
             if ($this->userService->register($user,$userId)) {
                 $this->addFlash('notice', 'Success!');
                 if(!$user->getAddresses()){
@@ -132,9 +132,9 @@ class UserController extends Controller
             return $this->redirectToRoute('register');
         }
         if(!$userId) {
-            return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $user->getAdmin()));
+            return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $this->userService->getUserById($userId)));
         }
-        return $this->render('FoodOrder/accountsettings.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $user->getAdmin()));
+        return $this->render('FoodOrder/accountsettings.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $this->userService->getUserById($userId)));
 
     }
 
