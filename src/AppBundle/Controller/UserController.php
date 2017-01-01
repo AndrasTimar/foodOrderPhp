@@ -13,6 +13,8 @@ use AppBundle\DTO\UserDTO;
 use AppBundle\Entity\User;
 use AppBundle\Service\IUserService;
 use AppBundle\util\RequestUtil;
+use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -106,37 +108,27 @@ class UserController extends Controller
     public function register(Request $request, $adminreg = false)
     {
         $userId = $request->getSession()->get("userId");
-
-        if($userId){
+        //simple registration, no user in session:
+        if(!$userId){
+            $user = new User(false);
+        }
+        //account update:
+        else if(!$adminreg){
             $user = $this->userService->getUserById($userId);
         }
+        //adminreg:
         else{
-            $user = new User();
-        }
-        if($adminreg && !$user->getAdmin()){
-            return $this->redirectToRoute('register');
-        }else if($adminreg){
-            $user = new User();
+            $currentUser = $this->userService->getUserById($userId);
+            if(!$currentUser->getAdmin()){
+                $this->addFlash('notice', 'You need administrator privileges for that action!');
+                return $this->redirectToRoute('foods');
+            }
+            $user = new User(true);
         }
         $formInterface = $this->userService->getRegForm($user);
-
         $formInterface->handleRequest($request);
-
-        if ($formInterface->isSubmitted() && $formInterface->isValid()) {
-
-            $user->setAdmin(($adminreg||$user->getAdmin()) ? 1 : 0);
-            $user->setPassword($this->passwordEncoder->hashPass($user->getPlainPassword()));
-            if ($this->userService->register($user,$userId)) {
-                $this->addFlash('notice', 'Success!');
-                if(!$user->getAddresses()){
-                    return $this->redirectToRoute('login');
-                }
-                return $this->redirectToRoute('foods');
-            } else {
-                $this->addFlash('notice', 'Username already taken!');
-            }
-
-            return $this->redirectToRoute('register');
+        if($formInterface->isSubmitted() && $formInterface->isValid()) {
+            return $this->addUserAndRedirect($user, RequestUtil::getReferer($request));
         }
         if(!$userId) {
             return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => false));
@@ -209,11 +201,31 @@ class UserController extends Controller
         $formInterface->handleRequest($request);
 
         if ($formInterface->isSubmitted() && $formInterface->isValid()) {
-            if ($this->userService->register($user,$userId)) {
-                $this->addFlash('notice', 'Success!');
-            }
+            $this->addUserAndRedirect($user,RequestUtil::getReferer($request));
             return $this->redirectToRoute("userlist");
         }
         return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $user->getAdmin()));
+    }
+
+    /**
+     * @param $user
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function addUserAndRedirect($user, $referer)
+    {
+        try{
+        $this->userService->register($user);
+            $this->addFlash('notice', 'Success!');
+            return $this->redirectToRoute('foods');
+        }catch (UniqueConstraintViolationException $ex){
+            $this->addFlash('notice', 'Username taken!');
+            return $this->redirect($referer);
+        }catch (NotNullConstraintViolationException $ex){
+            $this->addFlash('notice', 'Invalid input!');
+            return $this->redirect($referer);
+        }catch (\Exception $ex){
+            $this->addFlash('notice', 'Unknown Error!');
+            return $this->redirect($referer);
+        }
     }
 }

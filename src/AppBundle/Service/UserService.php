@@ -6,6 +6,7 @@ use AppBundle\DTO\UserDTO;
 use AppBundle\Entity\Address;
 use AppBundle\Entity\User;
 use AppBundle\Repository\UserRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -36,6 +37,8 @@ class UserService implements IUserService
      * @var UserRepository
      */
     private $userRepo;
+
+    private $passwordEncoder;
     /**
      * AuthenticationService constructor.
      * @param $entityManager EntityManager
@@ -78,20 +81,21 @@ class UserService implements IUserService
      * @param $user User
      * @return boolean
      */
-    function register($user, $userId)
+    function register($user)
     {
-
+        $userId = $user->getId();
         $found = false;
 
-        if(!$userId) {
+        if(!$user->getId()) {
             $found = $this->userRepo->findBy(["username" => $user->getUsername()]);
+            $user->setPassword($this->passwordEncoder->hashPass($user->getPlainPassword()));
         }
+
         if($userId || !$found) {
             $this->entityManager->merge($user);
             $this->entityManager->flush();
             return true;
         }
-
         return false;
     }
 

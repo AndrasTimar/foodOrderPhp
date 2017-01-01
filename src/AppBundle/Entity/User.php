@@ -233,12 +233,15 @@ class User implements UserInterface
     {
         return $this->admin;
     }
+
     /**
      * Constructor
+     * @param $admin boolean
      */
-    public function __construct()
+    public function __construct($admin)
     {
         $this->order = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->admin = $admin;
     }
 
     /**
