@@ -44,13 +44,12 @@ class FoodController extends Controller
     public function getList(Request $request) {
 
         $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
-        $user = $this->userService->getUserById($userId);
         $arr = $this->foodService->getAllFoods();
-        return $this->render(':FoodOrder:foodlist.html.twig', array('foodlist'=>$arr,"loggedIn"=>true,"admin"=>$user->getAdmin()));
+        if($userId){
+            $user = $this->userService->getUserById($userId);
+            return $this->render(':FoodOrder:foodlist.html.twig', array('foodlist'=>$arr,"loggedIn"=>true,"admin"=>$user->getAdmin()));
+        }
+        return $this->render(':FoodOrder:foodlist.html.twig', array('foodlist'=>$arr,"loggedIn"=>false,"admin"=>false));
     }
 
     /**
