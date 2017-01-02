@@ -12,6 +12,7 @@ namespace AppBundle\Controller;
 use AppBundle\DTO\UserDTO;
 use AppBundle\Entity\User;
 use AppBundle\Service\IUserService;
+use AppBundle\Service\PasswordEncoderService;
 use AppBundle\util\RequestUtil;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -132,7 +133,7 @@ class UserController extends Controller
         if(!$userId) {
             return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => false));
         }
-        return $this->render('FoodOrder/accountsettings.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $this->userService->getUserById($userId)));
+        return $this->render('FoodOrder/accountsettings.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $this->userService->getUserById($userId)->getAdmin()));
 
     }
 
