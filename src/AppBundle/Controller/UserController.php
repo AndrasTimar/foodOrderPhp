@@ -60,7 +60,6 @@ class UserController extends Controller
     }
     /**
      * @Route("/login", name="login")
-     * @Route("/", name="base")
      */
     public function login(Request $request)
     {

@@ -38,6 +38,7 @@ class FoodController extends Controller
     }
 
     /**
+     * @Route("/", name="base")
      * @Route("/foods", name="foods")
      * @Route("/foods/list", name="foodlist")
      */
