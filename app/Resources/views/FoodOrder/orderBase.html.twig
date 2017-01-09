@@ -11,16 +11,16 @@
                 <a class="navbar-brand" href="{{ path("foods") }}">Food Ordering</a>
             </div>
             <ul class="nav navbar-nav" >
-        {% if not loggedIn %}
-            <li><a href="{{ path('login') }}"> Log in</a></li>
-            <li><a href="{{ path('register') }}"> Register </a></li>
+        {% if not is_granted('ROLE_USER') %}
+            <li><a href="{{ path('fos_user_security_login') }}"> Log in</a></li>
+            <li><a href="{{ path('fos_user_registration_register') }}"> Register </a></li>
         {% else %}
             <li><a href="{{ path('foods') }}">Menu</a></li>
             <li><a href="{{ path('cart') }}">Cart</a></li>
             <li><a href="{{ path('listorders') }}">My orders</a></li>
-            <li><a href="{{ path('account') }}">Account</a></li>
             <li><a href="{{ path('logout') }}">Logout</a></li>
-            {% if admin %}
+            {% if is_granted('ROLE_ADMIN') %} LOFASZ {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
                 <li><a href="{{ path('users') }}"> Manage Users </a></li>
                 <li><a href="{{ path('manageorders') }}"> Manage Orders </a></li>
             {% endif %}

@@ -63,12 +63,7 @@ class OrderController extends Controller
      * @Route("/cart/add/{foodId}", name="cartaddfood")
      */
     public function addFood($foodId=0, Request $request){
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
-        $user = $this->userService->getUserById($userId);
+        $user = $this->getUser();
         $food = $this->foodService->getFoodById($foodId);
 
         /** @var OrderItem $orderItem */
@@ -89,56 +84,42 @@ class OrderController extends Controller
             return $this->redirectToRoute("cart");
         }
 
-        return $this->render('FoodOrder/baseform.html.twig', array("form"=>$formInterface->createView(),"loggedIn"=>true,"admin"=>$user->getAdmin()) );
+        return $this->render('FoodOrder/baseform.html.twig', array("form"=>$formInterface->createView()) );
     }
     /**
      * @Route("/cart/remove/{arrid}", name="cartremoveone")
      */
     public function removeFood($arrid = 0, Request $request){
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
-
         $orderItems = $request->getSession()->get("orderItems");
         if(isset($orderItems[$arrid])){
             unset($orderItems[$arrid]);
             $request->getSession()->set("orderItems",$orderItems);
             $this->addFlash('notice', 'Success!');
-        }else{
-            $this->addFlash('notice', 'Lofasz!'.$arrid);
         }
         return $this->redirectToRoute("cart");
     }
 
     /**
-     * @Route("/cart", name="cart")
+     * @Route("/cart/view", name="cart")
      */
     public function viewCart(Request $request){
-        $userId = $request->getSession()->get("userId");
-        if(!$userId) {
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
-        $user = $this->userService->getUserById($userId);
+        /** @var OrderItem[] $arr */
         $arr = $request->getSession()->get("orderItems");
+        if(!$arr){
+            $arr = [];
+        }
         $totalcost = 0;
+
         foreach($arr as $item){
             $totalcost += $item->getFood()->getCost() * $item->getAmount();
         }
-        return $this->render(':FoodOrder:cartview.html.twig', array('itemList'=>$arr,"loggedIn"=>true,"admin"=>$user->getAdmin(),"totalCost"=>$totalcost));
+        return $this->render(':FoodOrder:cartview.html.twig', array('itemList'=>$arr,"totalCost"=>$totalcost));
     }
 
     /**
      * @Route("/cart/clear", name="cartempty")
      */
     public function clearCart(Request $request){
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
         $request->getSession()->set("orderItems",array());
         $this->addFlash('notice', 'Success!');
         return $this->redirectToRoute("cart");
@@ -148,11 +129,6 @@ class OrderController extends Controller
      * @Route("/cart/send", name="sendorder")
      */
     public function placeOrder(Request $request){
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
         $orderItems = $request->getSession()->get("orderItems");
         if(sizeof($orderItems) == 0){
             $this->addFlash('notice', 'Cart is empty!');
@@ -166,7 +142,7 @@ class OrderController extends Controller
 
         /** @var Order $order */
         $order = new Order();
-        $user = $this->userService->getUserById($userId);
+        $user = $this->getUser();
         $order->setUser($user);
         $order->setAddress($this->addressService->getAddressById($address));
         foreach($orderItems as $orderItem){
@@ -189,71 +165,41 @@ class OrderController extends Controller
     }
 
     /**
-     * @Route("/orders", name="listorders")
+     * @Route("/orders/view", name="listorders")
      */
     public function getOrdersOfUser(Request $request){
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
 
         /** @var User $user */
-        $user = $this->userService->getUserById($userId);
+        $user = $this->getUser();
         $arr = $user->getOrder();
-        return $this->render(":FoodOrder:orderList.html.twig",["orders"=>$arr,"admin"=>$user->getAdmin(),"loggedIn"=>true]);
+        return $this->render(":FoodOrder:orderList.html.twig",["orders"=>$arr]);
     }
 
     /**
-     * @Route("/order/show/{orderId}", name="showorder")
+     * @Route("/orders/show/{orderId}", name="showorder")
      */
     public function showOrder(Request $request, $orderId){
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
+
         /** @var User $user */
-        $user = $this->userService->getUserById($userId);
+        $user = $this->getUser();
         $order = $this->orderService->getOrderById($orderId);
         return $this->render(":FoodOrder:ordersheet.html.twig",["order"=>$order,"admin"=>$user->getAdmin(),"loggedIn"=>true]);
 
     }
 
     /**
-     * @Route("/order/manage", name="manageorders")
+     * @Route("/orders/admin/manage", name="manageorders")
      */
     public function manageOrders(Request $request){
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
         /** @var User $user */
-        $user = $this->userService->getUserById($userId);
-        if(!$user->getAdmin()){
-            return $this->redirectToRoute("showorder");
-        }
-
         $arr = $this->orderService->getAllOrders();
-        return $this->render(":FoodOrder:orderList.html.twig",["orders"=>$arr,"admin"=>$user->getAdmin(),"loggedIn"=>true]);
+        return $this->render(":FoodOrder:orderList.html.twig",["orders"=>$arr]);
     }
 
     /**
-     * @Route("/order/deliver/{orderId}", name="deliverorder")
+     * @Route("/orders/admin/deliver/{orderId}", name="deliverorder")
      */
     public function deliverOrder(Request $request, $orderId){
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
-        /** @var User $user */
-        $user = $this->userService->getUserById($userId);
-        if(!$user->getAdmin()){
-            return $this->redirectToRoute("showorder");
-        }
-
         $order = $this->orderService->getOrderById($orderId);
         $order->setDeliverDate(new \DateTime(date("Y-m-d H:i:s")));
         $this->orderService->saveOrder($order);
@@ -270,19 +216,9 @@ class OrderController extends Controller
     }
 
     /**
-     * @Route("/order/delete/{orderId}", name="deleteorder")
+     * @Route("/orders/admin/delete/{orderId}", name="deleteorder")
      */
     public function deleteOrder(Request $request, $orderId){
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
-        /** @var User $user */
-        $user = $this->userService->getUserById($userId);
-        if(!$user->getAdmin()){
-            return $this->redirectToRoute("showorder");
-        }
 
         $order = $this->orderService->getOrderById($orderId);
         $this->orderService->deleteOrder($order);

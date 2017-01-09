@@ -10,20 +10,24 @@
         <tr>
             <th>Name</th>
             <th>Cost</th>
-            {% if admin %}
+            {% if is_granted('ROLE_ADMIN') %}
                 <th>Available</th>
             {% endif %}
             <th>Description</th>
         </tr>
         </thead>
         <tbody>
+        {% for role in app.user.getRoles %}
+            {{ role }}
+        {% endfor %}
         {% for food in foodlist %}
-            {% if admin or food.available %}
+            {% if is_granted('ROLE_ADMIN') or food.available %}
             {# @var food \AppBundle\Entity\Food #}
             <tr>
                 <td>{{ food.getName() }}</td>
                 <td>{{ food.getCost() }} HUF</td>
-                {% if admin %}
+
+                {% if is_granted('ROLE_ADMIN') %}
                     <td>{% if food.getAvailable() %}
                         YES
                     {% else %}
@@ -42,7 +46,7 @@
         {% endfor %}
         </tbody>
     </table>
-    {% if admin %}
+    {% if is_granted('ROLE_ADMIN') %}
       <a href="{{ path('foodedit') }}" class="btn btn-default" role="button">ADD NEW FOOD</a>
     {% endif %}
 {% endblock %}

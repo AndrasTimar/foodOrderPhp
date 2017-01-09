@@ -40,7 +40,7 @@ class UserController extends Controller
     public function logout(Request $request)
     {
         $request->getSession()->clear();
-        return $this->redirectToRoute("login");
+        return $this->redirectToRoute("fos_user_security_logout");
     }
 
     /**
@@ -48,8 +48,7 @@ class UserController extends Controller
      */
     public function accountDel(Request $request){
         try {
-            $userId = $request->getSession()->get("userId");
-            $user = $this->userService->getUserById($userId);
+            $user = $this->getUser();
             $this->userService->deleteUser($user);
         }
         catch(\Exception $ex){
@@ -57,83 +56,6 @@ class UserController extends Controller
         }
         $this->addFlash('notice', 'Account Deleted!');
         return $this->redirectToRoute("logout");
-
-    }
-    /**
-     * @Route("/login", name="login")
-     */
-    public function login(Request $request)
-    {
-        $userId = $request->getSession()->get("userId");
-        if (!$userId) {
-            $userDTO = new UserDTO();
-            $formInterface = $this->userService->getLoginForm($userDTO);
-            $formInterface->handleRequest($request);
-
-            if ($formInterface->isSubmitted() && $formInterface->isValid()) {
-                $username = $userDTO->username;
-                $password = $userDTO->password;
-                $user = $this->userService->login($username, $password);
-                if ($user) {
-                    $request->getSession()->set("userId", $user->getId());
-                    $request->getSession()->set("orderItems", array());
-                    $this->addFlash('notice', 'Login Successful! Welcome, ' . $user->getUsername());
-                    if(!$user->getAddresses() && !$user->getAdmin()) {
-                        return $this->redirectToRoute("address_mod");
-                    }
-                    return $this->redirectToRoute("foods");
-
-                }
-
-                $this->addFlash('notice', 'Invalid Credentials!');
-                return $this->redirectToRoute("login");
-            }
-
-            return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => false, "admin" => false));
-        }
-        $user = $this->userService->getUserById($userId);
-        if($user->getAddresses()){
-            return $this->redirectToRoute("foods");
-        }
-        return $this->redirectToRoute("address_mod");
-    }
-
-    /**
-     * @Route("/register/add_admin/{adminreg}", name="add_admin", defaults={"adminreg":"true"})
-     * @Route("/register", name="register")
-     * @Route("/account", name="account")
-     * @param $adminreg boolean
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function register(Request $request, $adminreg = false)
-    {
-        $userId = $request->getSession()->get("userId");
-        //simple registration, no user in session:
-        if(!$userId){
-            $user = new User(false);
-        }
-        //account update:
-        else if(!$adminreg){
-            $user = $this->userService->getUserById($userId);
-        }
-        //adminreg:
-        else{
-            $currentUser = $this->userService->getUserById($userId);
-            if(!$currentUser->getAdmin()){
-                $this->addFlash('notice', 'You need administrator privileges for that action!');
-                return $this->redirectToRoute('foods');
-            }
-            $user = new User(true);
-        }
-        $formInterface = $this->userService->getRegForm($user);
-        $formInterface->handleRequest($request);
-        if($formInterface->isSubmitted() && $formInterface->isValid()) {
-            return $this->addUserAndRedirect($user, RequestUtil::getReferer($request));
-        }
-        if(!$userId) {
-            return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => false));
-        }
-        return $this->render('FoodOrder/accountsettings.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $this->userService->getUserById($userId)->getAdmin()));
 
     }
 
@@ -147,35 +69,19 @@ class UserController extends Controller
 
     /**
      * @Route("/users", name="users")
-     * @Route("/users/list", name="userlist")
+     * @Route("/users/admin/list", name="userlist")
      */
     public function getList(Request $request) {
 
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
-        $user = $this->userService->getUserById($userId);
-        if(!$user->getAdmin()) {
-            $this->addFlash('notice', 'You have to be an admin for this action');
-            return $this->redirectToRoute('login');
-        }
         $users = $this->userService->getAllUsers();
-
-        return $this->render(':FoodOrder:userlist.html.twig', array('userlist'=>$users,"loggedIn"=>true,"admin"=>$user->getAdmin()));
+        return $this->render(':FoodOrder:userlist.html.twig', array('userlist'=>$users));
     }
 
     /**
-     * @Route("/users/delete/{userId}", name="userdel_admin")
+     * @Route("/users/admin/delete/{userId}", name="userdel_admin")
      */
     public function delete($userId, Request $request) {
-        $currentUser = $this->userService->getUserById($request->getSession()->get("userId"));
-        if(!$currentUser->getAdmin()){
-            $this->addFlash('notice', 'Log in as admin for this action!');
-            return $this->redirectToRoute("login");
-        }
-        try {
+         try {
             $user = $this->userService->getUserById($userId);
             $this->userService->deleteUser($user);
             $this->addFlash('notice', 'User Deleted!');
@@ -188,14 +94,10 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/users/edit/{userId}", name="useredit_admin")
+     * @Route("/users/admin/edit/{userId}", name="useredit_admin")
      */
     public function edit(Request $request, $userId)
     {
-        if (!$this->userService->getUserById($request->getSession()->get("userId"))->getAdmin()) {
-            $this->addFlash('notice', 'Log in as admin for this action!');
-            return $this->redirectToRoute("login");
-        }
         $user = $this->userService->getUserById($userId);
         $formInterface = $this->userService->getAdminEditForm($user);
         $formInterface->handleRequest($request);
@@ -204,7 +106,7 @@ class UserController extends Controller
             $this->addUserAndRedirect($user,RequestUtil::getReferer($request));
             return $this->redirectToRoute("userlist");
         }
-        return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(), "loggedIn" => $userId, "admin" => $user->getAdmin()));
+        return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView()));
     }
 
     /**

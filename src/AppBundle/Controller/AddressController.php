@@ -15,6 +15,7 @@ use AppBundle\Service\IAddressService;
 use AppBundle\Service\IUserService;
 use AppBundle\util\RequestUtil as util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,19 +43,14 @@ class AddressController extends Controller
      */
     public function getList(Request $request) {
 
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
-        $user = $this->userService->getUserById($userId);
+       $user = $this->getUser();
         $arr = $user->getAddresses();
         $selectedId = $request->getSession()->get("address");
         $selected = null;
         if($selectedId) {
             $selected = $this->addressService->getAddressById($selectedId);
         }
-        return $this->render(':FoodOrder:manageaddress.html.twig', array('addresslist'=>$arr,'selected'=>$selected,"loggedIn"=>true,"admin"=>$user->getAdmin()));
+        return $this->render(':FoodOrder:manageaddress.html.twig', array('addresslist'=>$arr,'selected'=>$selected));
     }
 
     /**
@@ -62,13 +58,11 @@ class AddressController extends Controller
      */
     public function selectAddress(Request $request, $addressId) {
 
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
+        /** @var User $user */
+        $user = $this->getUser();
+        /** @var Address $address */
         $address = $this->addressService->getAddressById($addressId);
-        if($address->getUser()->getId() == $userId){
+        if($address->getUser()->getId() == $user->getId()){
             $request->getSession()->set("address", $addressId);
         }
         return $this->redirect(util::getReferer($request));
@@ -79,13 +73,8 @@ class AddressController extends Controller
      */
     public function editAddress(Request $request,$addressId = 0){
 
-
         /** @var User $user */
-         $user = $this->userService->getUserById($request->getSession()->get("userId"));
-        if(!$user){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
+         $user = $this->getUser();
         if($addressId) {
             /** @var Address $address */
             $address = $this->addressService->getAddressById($addressId);
@@ -109,7 +98,7 @@ class AddressController extends Controller
             return $this->redirectToRoute("address_list");
         }
 
-        return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView(),"loggedIn"=>true,"admin"=>$user->getAdmin()));
+        return $this->render('FoodOrder/baseform.html.twig', array("form" => $formInterface->createView()));
 
     }
 
@@ -117,13 +106,8 @@ class AddressController extends Controller
      * @Route("/address/delete/{addressId}", name="address_del")
      */
     public function deleteAddress(Request $request, $addressId = 0){
-        $userId = $request->getSession()->get("userId");
-        if(!$userId){
-            $this->addFlash('notice', 'Please log in!');
-            return $this->redirectToRoute("login");
-        }
         /** @var User $user */
-        $user = $this->userService->getUserById($userId);
+        $user = $this->getUser();
 
         /** @var Address $address */
         $address = $this->addressService->getAddressById($addressId);

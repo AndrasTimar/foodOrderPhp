@@ -163,4 +163,11 @@ class UserService implements IUserService
         $form->add("register", SubmitType::class, array('label'=>'Save'));
         return $form->getForm();
     }
+
+    public function promoteToAdmin(User $user)
+    {
+        $user->addRole('ROLE_ADMIN');
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+    }
 }

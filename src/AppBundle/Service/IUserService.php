@@ -67,4 +67,5 @@ interface IUserService
      */
     public function getAllUsers();
 
+    public function promoteToAdmin(User $user);
 }

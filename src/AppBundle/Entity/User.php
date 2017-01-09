@@ -9,76 +9,34 @@
 namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Symfony\Component\Security\Core\User\UserInterface;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @ORM\Table(name="user",uniqueConstraints={@UniqueConstraint(name="uname_idx", columns={"username"})})
  * @package AppBundle\Entity
  */
-class User implements UserInterface
+class User extends BaseUser
 {
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     * @
-     */
-    private $username;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $password;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $email;
-
+    protected $id;
     /**
      * @ORM\OneToMany(targetEntity="Address", mappedBy="user",cascade={"all"})
      */
-    private $addresses;
+    protected $addresses;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $realName;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $admin;
-
+    protected $realName;
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Order", mappedBy="user",cascade={"all"})
      */
-    private $order;
-
-    private $plainPassword;
-
-    /**
-     * @return string
-     */
-    public function getPlainPassword()
-    {
-        return $this->plainPassword;
-    }
-
-    /**
-     * @param string $plainPassword
-     */
-    public function setPlainPassword($plainPassword)
-    {
-        $this->plainPassword = $plainPassword;
-    }
-
+    protected $order;
 
     /**
      * Get id
@@ -88,54 +46,6 @@ class User implements UserInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set username
-     *
-     * @param string $username
-     *
-     * @return User
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * Get username
-     *
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     *
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
     }
 
     /**
@@ -200,48 +110,17 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * Get address
-     *
-     * @return \AppBundle\Entity\Address
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
 
-    /**
-     * Set admin
-     *
-     * @param boolean $admin
-     *
-     * @return User
-     */
-    public function setAdmin($admin)
-    {
-        $this->admin = $admin;
-
-        return $this;
-    }
-
-    /**
-     * Get admin
-     *
-     * @return boolean
-     */
-    public function getAdmin()
-    {
-        return $this->admin;
-    }
 
     /**
      * Constructor
      * @param $admin boolean
      */
-    public function __construct($admin)
+    public function __construct()
     {
+        parent::__construct();
         $this->order = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->admin = $admin;
+        $this->roles = array('ROLE_USER');
     }
 
     /**

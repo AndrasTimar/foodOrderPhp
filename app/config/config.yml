@@ -11,7 +11,7 @@ parameters:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -60,3 +60,14 @@ doctrine:
 
 
 # app/config/config.yml
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+    from_email:
+        address:     admin@example.com
+        sender_name:    Example.com
+    registration:
+        confirmation:
+            enabled:    false
+            template:   FOSUserBundle:Registration:email.txt.twig
