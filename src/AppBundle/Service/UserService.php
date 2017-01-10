@@ -4,6 +4,7 @@ namespace  AppBundle\Service;
 use AppBundle\AppBundle;
 use AppBundle\DTO\UserDTO;
 use AppBundle\Entity\Address;
+use AppBundle\Entity\Group;
 use AppBundle\Entity\User;
 use AppBundle\Repository\UserRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -156,10 +157,6 @@ class UserService implements IUserService
         $form = $this->formFactory->createBuilder(FormType::class, $user);
         $form->add("username", TextType::class);
         $form->add("email", EmailType::class);
-        $form->add("realName", TextType::class);
-        $form->add("admin", ChoiceType::class,
-            array("choices"=>array("YES"=>true, "NO"=>false))
-        );
         $form->add("register", SubmitType::class, array('label'=>'Save'));
         return $form->getForm();
     }
@@ -169,5 +166,13 @@ class UserService implements IUserService
         $user->addRole('ROLE_ADMIN');
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+    }
+
+
+    public function persistUser($user)
+    {
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        return $user;
     }
 }

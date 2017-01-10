@@ -24,6 +24,7 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\OneToMany(targetEntity="Address", mappedBy="user",cascade={"all"})
      */
@@ -31,10 +32,6 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    protected $realName;
-    /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Order", mappedBy="user",cascade={"all"})
      */
     protected $order;
 
@@ -70,30 +67,6 @@ class User extends BaseUser
     public function getEmail()
     {
         return $this->email;
-    }
-
-    /**
-     * Set realName
-     *
-     * @param string $realName
-     *
-     * @return User
-     */
-    public function setRealName($realName)
-    {
-        $this->realName = $realName;
-
-        return $this;
-    }
-
-    /**
-     * Get realName
-     *
-     * @return string
-     */
-    public function getRealName()
-    {
-        return $this->realName;
     }
 
     /**
@@ -209,7 +182,7 @@ class User extends BaseUser
      */
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return $this->roles;
     }
 
     /**

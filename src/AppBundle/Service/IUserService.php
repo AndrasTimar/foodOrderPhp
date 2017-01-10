@@ -2,6 +2,7 @@
 
 namespace  AppBundle\Service;
 use AppBundle\Entity\Address;
+use AppBundle\Entity\Group;
 use AppBundle\Entity\User;
 use Symfony\Component\Form\FormInterface;
 
@@ -68,4 +69,6 @@ interface IUserService
     public function getAllUsers();
 
     public function promoteToAdmin(User $user);
+
+    public function persistUser($user);
 }

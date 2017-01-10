@@ -17,9 +17,6 @@
         </tr>
         </thead>
         <tbody>
-        {% for role in app.user.getRoles %}
-            {{ role }}
-        {% endfor %}
         {% for food in foodlist %}
             {% if is_granted('ROLE_ADMIN') or food.available %}
             {# @var food \AppBundle\Entity\Food #}

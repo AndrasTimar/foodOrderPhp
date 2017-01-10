@@ -44,7 +44,7 @@ class FoodController extends Controller
      * @Route("/foods/list", name="foodlist")
      */
     public function getList(Request $request) {
-        $this->userService->promoteToAdmin($this->getUser());
+        //$this->userService->promoteToAdmin($this->getUser());
         $arr = $this->foodService->getAllFoods();
         return $this->render(':FoodOrder:foodlist.html.twig', ["foodlist"=>$arr]);
    }

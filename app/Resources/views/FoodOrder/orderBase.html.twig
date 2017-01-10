@@ -19,7 +19,6 @@
             <li><a href="{{ path('cart') }}">Cart</a></li>
             <li><a href="{{ path('listorders') }}">My orders</a></li>
             <li><a href="{{ path('logout') }}">Logout</a></li>
-            {% if is_granted('ROLE_ADMIN') %} LOFASZ {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
                 <li><a href="{{ path('users') }}"> Manage Users </a></li>
                 <li><a href="{{ path('manageorders') }}"> Manage Orders </a></li>

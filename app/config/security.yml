@@ -11,6 +11,7 @@ security:
             pattern: ^/
             form_login:
                 provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
             logout:       true
             anonymous:    true
     access_control:
@@ -24,3 +25,8 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    role_hierarchy:
+            ROLE_CONTRIBUTOR: ROLE_USER
+            ROLE_MODERATOR:   ROLE_CONTRIBUTOR
+            ROLE_ADMIN:       ROLE_MODERATOR
+            ROLE_SUPER_ADMIN: ROLE_ADMIN
