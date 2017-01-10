@@ -130,4 +130,18 @@ class UserController extends Controller
             return $this->redirect($referer);
         }
     }
+    /**
+     * @Route("/users/admin/promote/{userId}", name="promote")
+     */
+    public function promoteToAdmin(Request $request,$userId){
+        $this->userService->promoteToAdmin($userId);
+        return $this->redirect(RequestUtil::getReferer($request));
+    }
+    /**
+     * @Route("/users/admin/demote/{userId}", name="demote")
+     */
+    public function demoteToUser(Request $request,$userId){
+        $this->userService->demoteToUser($userId);
+        return $this->redirect(RequestUtil::getReferer($request));
+    }
 }

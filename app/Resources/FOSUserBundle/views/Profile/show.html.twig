@@ -1,0 +1,8 @@
+{% extends 'FoodOrder/orderbase.html.twig'%}
+{% block orderbody %}
+<div style="width: 40%">
+{% include "@FOSUser/Profile/show_content.html.twig" %}
+</div>
+    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-default" role="button">Edit</a>
+    <a href="{{ path('fos_user_resetting_request') }}" class="btn btn-default" role="button">Reset my password</a>
+{% endblock orderbody %}

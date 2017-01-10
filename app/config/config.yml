@@ -71,3 +71,8 @@ fos_user:
         confirmation:
             enabled:    false
             template:   FOSUserBundle:Registration:email.txt.twig
+
+swiftmailer:
+    transport: gmail
+    username:  '%mailUser%'
+    password:  '%mailPass%'

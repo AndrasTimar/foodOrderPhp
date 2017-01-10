@@ -183,8 +183,12 @@ class OrderController extends Controller
         /** @var User $user */
         $user = $this->getUser();
         $order = $this->orderService->getOrderById($orderId);
-        return $this->render(":FoodOrder:ordersheet.html.twig",["order"=>$order,"admin"=>$user->getAdmin(),"loggedIn"=>true]);
-
+        if($user == $order->getUser()) {
+            return $this->render(":FoodOrder:ordersheet.html.twig", ["order" => $order]);
+        }
+        else{
+            return $this->redirectToRoute('listorders');
+        }
     }
 
     /**

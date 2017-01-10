@@ -33,7 +33,7 @@
                 <td>
                     <td><a class="btn btn-default" href="{{ path('showorder', { 'orderId': order.getId() }) }}">Show</a></td>
                 </td>
-                {% if admin %}
+                {% if is_granted('ROLE_ADMIN') %}
                     {% if not order.getDeliverDate() %}
                     <td><a class="btn btn-default" href="{{ path('deliverorder', { 'orderId': order.getId() }) }}">Set to Delivered</a></td>
                         {% else %}

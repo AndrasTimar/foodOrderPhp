@@ -19,8 +19,3 @@ monolog:
             level: debug
         console:
             type:  console
-# Swiftmailer Configuration
-swiftmailer:
-    transport: gmail
-    username:  '%mailUser%'
-    password:  '%mailPass%'

@@ -26,7 +26,4 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
     role_hierarchy:
-            ROLE_CONTRIBUTOR: ROLE_USER
-            ROLE_MODERATOR:   ROLE_CONTRIBUTOR
-            ROLE_ADMIN:       ROLE_MODERATOR
-            ROLE_SUPER_ADMIN: ROLE_ADMIN
+            ROLE_ADMIN: ROLE_USER

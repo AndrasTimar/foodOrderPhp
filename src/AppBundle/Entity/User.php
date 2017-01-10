@@ -31,9 +31,9 @@ class User extends BaseUser
     protected $addresses;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Order", mappedBy="user",cascade={"all"})
      */
-    protected $order;
+    private $order;
 
     /**
      * Get id

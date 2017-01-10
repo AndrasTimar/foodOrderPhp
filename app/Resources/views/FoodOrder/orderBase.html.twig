@@ -18,6 +18,8 @@
             <li><a href="{{ path('foods') }}">Menu</a></li>
             <li><a href="{{ path('cart') }}">Cart</a></li>
             <li><a href="{{ path('listorders') }}">My orders</a></li>
+            <li><a href="{{ path('fos_user_profile_show') }}">My profile</a></li>
+            <li><a href="{{ path('address_list') }}">My addresses</a></li>
             <li><a href="{{ path('logout') }}">Logout</a></li>
             {% if is_granted('ROLE_ADMIN') %}
                 <li><a href="{{ path('users') }}"> Manage Users </a></li>

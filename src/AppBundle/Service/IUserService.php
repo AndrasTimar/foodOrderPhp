@@ -68,7 +68,9 @@ interface IUserService
      */
     public function getAllUsers();
 
-    public function promoteToAdmin(User $user);
+    public function promoteToAdmin($user);
 
     public function persistUser($user);
+
+    public function demoteToUser($userId);
 }

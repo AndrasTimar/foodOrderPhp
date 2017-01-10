@@ -161,8 +161,10 @@ class UserService implements IUserService
         return $form->getForm();
     }
 
-    public function promoteToAdmin(User $user)
+    public function promoteToAdmin($userId)
     {
+        /** @var User $user */
+        $user = $this->getUserById($userId);
         $user->addRole('ROLE_ADMIN');
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -174,5 +176,14 @@ class UserService implements IUserService
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $user;
+    }
+
+    public function demoteToUser($userId)
+    {
+        $user = $this->getUserById($userId);
+        $user->removeRole('ROLE_ADMIN');
+        $user->addRole('ROLE_USER');
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 }

@@ -25,6 +25,11 @@
                         <td>No</td>
                     {% endif %}
                     <td><a class="btn btn-default" href="{{ path('useredit_admin', { 'userId': user.getId() }) }}">Edit</a></td>
+                    {% if 'ROLE_ADMIN' in user.getRoles %}
+                        <td><a class="btn btn-default" href="{{ path('demote', { 'userId': user.getId() }) }}">Demote to user</a></td>
+                    {% else %}
+                        <td><a class="btn btn-default" href="{{ path('promote', { 'userId': user.getId() }) }}">Promote to admin</a></td>
+                    {% endif %}
                     <td><a class="btn btn-danger" href="{{ path('userdel_admin', { 'userId': user.getId() }) }}">&#10006;</a></td>
                 </tr>
         {% endfor %}
