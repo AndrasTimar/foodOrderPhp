@@ -40,11 +40,6 @@ class OrderController extends Controller
     private $userService;
 
     /**
-     * @var \Swift_Mailer
-     */
-    private $mailerService;
-
-    /**
      * @var IAddressService
      */
     private $addressService;
@@ -55,7 +50,6 @@ class OrderController extends Controller
         $this->orderService=$this->get("app.order_service");
         $this->userService=$this->get("app.user_service");
         $this->foodService=$this->get("app.food_service");
-        $this->mailerService=$this->get("mailer");
         $this->addressService=$this->get("app.address_service");
     }
 
@@ -141,23 +135,7 @@ class OrderController extends Controller
         }
 
         /** @var Order $order */
-        $order = new Order();
-        $user = $this->getUser();
-        $order->setUser($user);
-        $order->setAddress($this->addressService->getAddressById($address));
-        foreach($orderItems as $orderItem){
-            $order->getOrderItem()->add($orderItem);
-        }
-        $order->setOrderDate(new \DateTime(date("Y-m-d H:i:s")));
-        $this->orderService->saveOrder($order);
-
-        //define credentials in config.yml
-        $message = Swift_Message::newInstance('Order Sent')
-            ->setFrom(array('foodorder.oe@gmail.com' => 'Food Order'))
-            ->setTo(array($user->getEmail()))
-            ->setBody('Your order was sent at '.$order->getOrderDate()->format("d/m/Y H:i:s").". It will arrive in 65 minutes.")
-        ;
-        $this->mailerService->send($message);
+        $this->orderService->placeOrder($address, $orderItems, $this->getUser());
 
         $request->getSession()->set("orderItems",array());
         $this->addFlash('notice', 'Order Sent');
@@ -205,15 +183,7 @@ class OrderController extends Controller
      */
     public function deliverOrder(Request $request, $orderId){
         $order = $this->orderService->getOrderById($orderId);
-        $order->setDeliverDate(new \DateTime(date("Y-m-d H:i:s")));
-        $this->orderService->saveOrder($order);
-
-        $message = Swift_Message::newInstance('Order Delivered')
-            ->setFrom(array('foodorder.oe@gmail.com' => 'Food Order'))
-            ->setTo(array($order->getUser()->getEmail()))
-            ->setBody('Your order was delivered at '.$order->getDeliverDate()->format("d/m/Y H:i:s").". Enjoy.");
-
-        $this->mailerService->send($message);
+        $this->orderService->deliverOrder($order);
 
         return $this->redirectToRoute("manageorders");
 
@@ -230,4 +200,11 @@ class OrderController extends Controller
         return $this->redirectToRoute("manageorders");
 
     }
+
+
+
+    /**
+     * @param $order
+     */
+
 }

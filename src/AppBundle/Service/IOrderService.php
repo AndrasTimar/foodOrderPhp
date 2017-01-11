@@ -9,9 +9,11 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\Entity\Address;
 use AppBundle\Entity\Food;
 use AppBundle\Entity\Order;
 use AppBundle\Entity\OrderItem;
+use AppBundle\Entity\User;
 use Symfony\Component\Form\Test\FormInterface;
 
 interface IOrderService
@@ -44,4 +46,11 @@ interface IOrderService
      * @param $order Order
      */
     public function deleteOrder($order);
+
+    /**
+     * @param $order Order
+     */
+    public function deliverOrder(Order $order);
+
+    public function placeOrder($address, $orderItems,User $user);
 }

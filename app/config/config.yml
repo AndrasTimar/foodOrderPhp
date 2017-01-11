@@ -66,7 +66,7 @@ fos_user:
     user_class: AppBundle\Entity\User
     from_email:
         address:     admin@example.com
-        sender_name:    Example.com
+        sender_name:    foodorder.andrastimar.me
     registration:
         confirmation:
             enabled:    false

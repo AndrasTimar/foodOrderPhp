@@ -1,0 +1,10 @@
+Dear  {{ order.getUser.getUsername }}!
+We have delivered your order, we hope everything went well.
+Details:
+{% for item in order.getOrderItem %}
+    {{ item.getAmount }} {{ item.getFood.getName }} cost: {{ item.getFood.getCost * item.getAmount }}
+{% endfor %}
+
+Thanks for ordering!
+
+{{ "now"|date("m/d/Y H:i:s") }}

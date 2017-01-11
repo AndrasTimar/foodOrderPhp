@@ -116,7 +116,7 @@ class UserController extends Controller
     public function addUserAndRedirect($user, $referer)
     {
         try{
-        $this->userService->register($user);
+        $this->userService->persistUser($user);
             $this->addFlash('notice', 'Success!');
             return $this->redirectToRoute('foods');
         }catch (UniqueConstraintViolationException $ex){

@@ -39,19 +39,16 @@ class UserService implements IUserService
      */
     private $userRepo;
 
-    private $passwordEncoder;
     /**
      * AuthenticationService constructor.
      * @param $entityManager EntityManager
      * @param $formFactory FormFactory
-     * @param PasswordEncoderService $passwordEncoderService
      */
-    public function __construct(EntityManager $entityManager,FormFactory $formFactory, PasswordEncoderService $passwordEncoderService)
+    public function __construct(EntityManager $entityManager,FormFactory $formFactory)
     {
         $this->entityManager = $entityManager;
         $this->userRepo = $entityManager->getRepository(User::class);
         $this->formFactory = $formFactory;
-        $this->passwordEncoder=$passwordEncoderService;
     }
 
     /**
@@ -64,40 +61,6 @@ class UserService implements IUserService
         $form->add("password", PasswordType::class);
         $form->add("login", SubmitType::class, array('label'=>'Login'));
         return $form->getForm();
-    }
-
-    /**
-     * @param $uname string
-     * @param $upass string
-     * @return User
-     */
-    function login($uname, $upass)
-    {
-        $upass = $this->passwordEncoder->hashPass($upass);
-        return $this->userRepo->findByNameAndPassword($uname,$upass);
-
-    }
-
-    /**
-     * @param $user User
-     * @return boolean
-     */
-    function register($user)
-    {
-        $userId = $user->getId();
-        $found = false;
-
-        if(!$user->getId()) {
-            $found = $this->userRepo->findBy(["username" => $user->getUsername()]);
-            $user->setPassword($this->passwordEncoder->hashPass($user->getPlainPassword()));
-        }
-
-        if($userId || !$found) {
-            $this->entityManager->merge($user);
-            $this->entityManager->flush();
-            return true;
-        }
-        return false;
     }
 
     /**

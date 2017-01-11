@@ -17,7 +17,9 @@ services:
       arguments: ['@doctrine.orm.entity_manager', '@form.factory']
   app.order_service:
         class: AppBundle\Service\OrderService
-        arguments: ['@doctrine.orm.entity_manager', '@form.factory']
+        arguments: ['@doctrine.orm.entity_manager', '@form.factory', '@mailer', '@templating', '@app.address_service']
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+# \Swift_Mailer $mailerService, EngineInterface $templating, AddressService $addressService

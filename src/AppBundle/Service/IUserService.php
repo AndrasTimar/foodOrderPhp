@@ -14,37 +14,12 @@ use Symfony\Component\Form\FormInterface;
  */
 interface IUserService
 {
-    /**
-     * @param $uname string
-     * @param $upass string
-     * @return User
-     */
-    function login($uname, $upass);
-
-
-    /**
-     * @param UserDTO
-     * @return FormInterface
-     */
-    function getLoginForm($userDTO);
-
-    /**
-     * @param $user User
-     * @return FormInterface
-     */
-    public function getRegForm($user);
 
     /**
      * @param $user User
      * @return FormInterface
      */
     public function getAdminEditForm($user);
-
-    /**
-     * @param $user User
-     * @return boolean
-     */
-    function register($user);
 
     /**
      * @param $username String

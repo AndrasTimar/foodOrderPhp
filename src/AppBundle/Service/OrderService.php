@@ -8,10 +8,15 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Address;
+use AppBundle\Entity\Food;
 use AppBundle\Entity\Order;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Swift_Message;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -34,17 +39,31 @@ class OrderService implements IOrderService
      * @var FormFactory
      */
     private $formFactory;
+    /**
+     * @var \Swift_Mailer
+     */
+    private $mailerService;
 
+    /**
+     * @var EngineInterface
+     */
+    private $templating;
+
+    private $addressService;
     /**
      * AuthenticationService constructor.
      * @param $entityManager EntityManager
      * @param $formFactory FormFactory
      */
-    public function __construct(EntityManager $entityManager,FormFactory $formFactory)
+    public function __construct(EntityManager $entityManager,FormFactory $formFactory, \Swift_Mailer $mailerService, EngineInterface $templating, AddressService $addressService )
     {
         $this->entityManager = $entityManager;
         $this->orderRepository = $entityManager->getRepository(Order::class);
         $this->formFactory = $formFactory;
+        $this->mailerService = $mailerService;
+        $this->templating = $templating;
+        $this->addressService = $addressService;
+
     }
 
     /**
@@ -61,7 +80,7 @@ class OrderService implements IOrderService
                return $repository->createQueryBuilder("f")
                     ->where("f.available = 1");
              },
-            'choice_label' => function ($food) {
+            'choice_label' => function (Food $food) {
                 return $food->getName()." | ".$food->getCost()." Ft";},
             'choice_value' => 'id'
         ));
@@ -99,5 +118,42 @@ class OrderService implements IOrderService
     {
         $this->entityManager->remove($order);
         $this->entityManager->flush();
+    }
+
+    public function deliverOrder(Order $order)
+    {
+        $order->setDeliverDate(new \DateTime(date("Y-m-d H:i:s")));
+        $this->saveOrder($order);
+
+        $message = Swift_Message::newInstance('Order Delivered')
+            ->setFrom(array('foodorder.oe@gmail.com' => 'Food Order'))
+            ->setTo(array($order->getUser()->getEmail()))
+            ->setBody($this->templating->render("email/deliverOrder.email.html.twig",["order"=> $order]));
+
+        $this->mailerService->send($message);
+    }
+
+    /**
+     * @param $address
+     * @param $orderItems
+     */
+    public function placeOrder($address, $orderItems, User $user)
+    {
+        $order = new Order();
+        $order->setUser($user);
+
+        $order->setAddress($this->addressService->getAddressById($address));
+        foreach ($orderItems as $orderItem) {
+            $order->getOrderItem()->add($orderItem);
+        }
+        $order->setOrderDate(new \DateTime(date("Y-m-d H:i:s")));
+        $this->saveOrder($order);
+
+        //define credentials in config.yml
+        $message = Swift_Message::newInstance('Order Sent')
+            ->setFrom(array('foodorder.oe@gmail.com' => 'Food Order'))
+            ->setTo(array($user->getEmail()))
+            ->setBody($this->templating->render("email/placeOrder.email.html.twig",["order"=> $order]));
+        $this->mailerService->send($message);
     }
 }
